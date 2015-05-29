@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using TINKIN01.Chess.Pieces;
 
 namespace TINKIN01.Chess
@@ -12,6 +13,20 @@ namespace TINKIN01.Chess
         /// </summary>
         public IChesspiece[,] Pieces { get; set; }
 
+        public Point IndexOf(IChesspiece chesspiece){
+            var pieces = Pieces;
+            for(int x = 0; x <= 7; x++)
+            {
+                for(int y = 0; y <= 7; y++)
+                {
+                    if( pieces[x, y].Equals(chesspiece)){
+                        return new Point(x, y);
+                    }
+                }
+            }
+            return new Point(-1, -1);
+        }
+
         /// <summary>
         /// Validates a move
         /// </summary>
@@ -20,6 +35,7 @@ namespace TINKIN01.Chess
         public Boolean IsValid(Move move)
         {
             throw new System.NotImplementedException();
+
         }
 
         /// <summary>
@@ -29,7 +45,8 @@ namespace TINKIN01.Chess
         /// <returns></returns>
         public IEnumerable<Move> GetValidMoves(IChesspiece chesspiece)
         {
-            return null;
+            throw new System.NotImplementedException();
+
         }
 
         /// <summary>

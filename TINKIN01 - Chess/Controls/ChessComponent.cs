@@ -8,6 +8,7 @@ using System.Security.Principal;
 using System.Windows.Forms;
 using TINKIN01.Chess;
 using TINKIN01.Chess.Pieces;
+using TINKIN01.Chess.Players;
 
 namespace TINKIN01.Controls
 {
@@ -164,7 +165,7 @@ namespace TINKIN01.Controls
 
         protected override void OnMouseClick(MouseEventArgs e)
         {
-            var local = new PointF(e.X - BoardLocation.X, e.Y - BoardLocation.X);
+            var local = new PointF(e.X - BoardLocation.X, e.Y - BoardLocation.Y);
             var coordinate = new Point((int)Math.Floor(local.X / TileSize.Width), (int)Math.Floor(local.Y / TileSize.Height));
 
             if (coordinate.X < 0 || coordinate.Y < 0 || coordinate.X > 8 || coordinate.Y > 8)
@@ -174,17 +175,19 @@ namespace TINKIN01.Controls
             if (SelectedMove == null || SelectedMove.IsDefault() || (!SelectedMove.Start.Equals(Chess.Move.DefaultCoodtinate) && !SelectedMove.End.Equals(Chess.Move.DefaultCoodtinate)))
                 SelectedMove = new Move();
 
-            if (SelectedMove.Start.Equals(Chess.Move.DefaultCoodtinate) || (board[coordinate] != null &&
-                board[coordinate].Owner == Board.CurrentPlayer))
+            if (board[coordinate] != null)
             {
-                //Selected our start
-                SelectedMove.Start = coordinate;
-                SelectedMove.Piece = board[coordinate];
-                Refresh();
-                return;
+                if (board[coordinate].Owner == Board.CurrentPlayer && Board.CurrentPlayer is Human)
+                {
+                    //Selected our start
+                    SelectedMove.Start = coordinate;
+                    SelectedMove.Piece = board[coordinate];
+                    Refresh();
+                    return;
+                }
             }
 
-            if (SelectedMove.End.Equals(Chess.Move.DefaultCoodtinate) && !SelectedMove.Start.Equals(Chess.Move.DefaultCoodtinate))
+            if (SelectedMove.Piece !=  null && SelectedMove.End.Equals(Chess.Move.DefaultCoodtinate) && !SelectedMove.Start.Equals(Chess.Move.DefaultCoodtinate))
             {
                 var moves = SelectedMove.Piece.GetValidMoves(Board);
                 if (SelectedMove.Piece.GetValidMoves(Board).Any(x => x.End.Equals(coordinate)))

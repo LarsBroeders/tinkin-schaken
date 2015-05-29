@@ -183,9 +183,10 @@ namespace TINKIN01.Chess
         public void ExecuteMove(Move move)
         {
             //Executing the move
+            CurrentPlayer = CurrentPlayer == Player1 ? Player2 : Player1;
             this[move.End] = this[move.Start];
             this[move.Start] = null;
-            CurrentPlayer = CurrentPlayer == Player1 ? Player2 : Player1;
+            
 
             if (MoveMadeEvent != null)
                 MoveMadeEvent(this, new MoveEventArgs{EnteredMove =  move});

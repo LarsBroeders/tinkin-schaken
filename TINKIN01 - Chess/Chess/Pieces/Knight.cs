@@ -19,8 +19,20 @@ namespace TINKIN01.Chess.Pieces
 
         public Point[] Moves
         {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+            get
+            {
+                return new[] { 
+                    new Point(1, 2),
+                    new Point(1, -2),
+                    new Point(-1, 2),
+                    new Point(-1, -2),
+                    new Point(2, 1),
+                    new Point(2, -1),
+                    new Point(-2, 1),
+                    new Point(-2, -1)
+                };
+            }
+            private set { }
         }
     }
 }

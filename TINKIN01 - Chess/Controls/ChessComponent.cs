@@ -92,11 +92,19 @@ namespace TINKIN01.Controls
                 using (var boardGraphics = Graphics.FromImage(boardImage))
                 {
                     //Defining the colors
-                    var tilteBgColor = new SolidBrush(Color.FromArgb(77, 109, 146));
-                    var titleSelectedStart = new SolidBrush(Color.FromArgb(250, 250, 170));
-                    var titleSelectedEnd = new SolidBrush(Color.FromArgb(250, 250, 100));
-                    var titleBgWhite = new SolidBrush(Color.FromArgb(220, 220, 220));
+                    var tileSelectedStart = new SolidBrush(Color.FromArgb(250, 250, 170));
+                    var tileSelectedEnd = new SolidBrush(Color.FromArgb(250, 250, 100));
+                    var tileBgBlack = new SolidBrush(Color.FromArgb(77, 109, 146));
+                    var tileBgWhite = new SolidBrush(Color.FromArgb(220, 220, 220));
+                    var tileHighlight = new SolidBrush(Color.FromArgb(100, 100, 100));
                     var imageAttr = new ImageAttributes();
+                    var elipseMargin = TileSize.Width * 0.3f;
+                    var squareMargin = TileSize.Width * 0.1f;
+
+                    //Preparing the highlighted moves
+                    var highlightedCoordinates = new List<Point>();
+                    if (SelectedMove != null && SelectedMove.Piece != null && SelectedMove.End.Equals(Chess.Move.DefaultCoodtinate))
+                        highlightedCoordinates.AddRange(SelectedMove.Piece.GetValidMoves(Board).Select(move => move.End));
 
                     //Draw the game on boardgraphics, using floats for less conversion
                     for (int x = 0; x < 8f; x += 1)
@@ -104,9 +112,10 @@ namespace TINKIN01.Controls
                         for (int y = 0; y < 8f; y += 1)
                         {
                             var piecePt = new Point(x, y);
-                            var brush = tilteBgColor;
+                            
+                            var brush = tileBgBlack;
                             if (((y%2) + x)%2 == 0)
-                                brush = titleBgWhite;
+                                brush = tileBgWhite;
 
                             //Fill background Color
                             var destRectF = new RectangleF(x * TileSize.Width, y * TileSize.Height, TileSize.Width, TileSize.Height);
@@ -116,23 +125,23 @@ namespace TINKIN01.Controls
                             if (SelectedMove != null)
                             {
                                 if (SelectedMove.Start.Equals(piecePt))
-                                    boardGraphics.FillRectangle(titleSelectedStart, destRectF);
+                                    boardGraphics.FillRectangle(tileSelectedStart, destRectF);
 
                                 if (SelectedMove.End.Equals(piecePt) || (SelectedMove.Start.Equals(piecePt) && !SelectedMove.Start.Equals(Chess.Move.DefaultCoodtinate) && SelectedMove.End.Equals(Chess.Move.DefaultCoodtinate)))
-                                    boardGraphics.FillRectangle(titleSelectedEnd, destRectF);
+                                    boardGraphics.FillRectangle(tileSelectedEnd, destRectF);
                             }
+
+                            if (highlightedCoordinates.Any(pt => pt == piecePt))
+                                boardGraphics.FillEllipse(tileHighlight,
+                                    RectangleF.Inflate(destRectF, -elipseMargin, -elipseMargin));
 
                             //Draw piece
                             if (Board != null && Board[x, y] != null)
                             {
                                 var piece = Board[x, y];
-                                var pieceBmp = piece.GetBitmap();                               
-                       
-                                var margin = TileSize.Width*0.1f;
-                                var destRect = new Rectangle((int)Math.Round(destRectF.X + margin), (int)Math.Round(destRectF.Y + margin),
-                                (int)Math.Round(destRectF.Width - margin * 2f), (int)Math.Round(destRectF.Height - margin * 2f));
-                                
+                                var pieceBmp = piece.GetBitmap();
 
+                                var destRect = Rectangle.Round(RectangleF.Inflate(destRectF, -squareMargin, -squareMargin));
                                 boardGraphics.DrawImage(pieceBmp, destRect, 0, 0, pieceBmp.Width,
                                     pieceBmp.Height, GraphicsUnit.Pixel, imageAttr);
                             }
@@ -144,7 +153,7 @@ namespace TINKIN01.Controls
                     {
                         controlGraphics.FillRectangle(new SolidBrush(BackColor), 0, 0, Width, Height);
                         controlGraphics.DrawImage(boardImage, BoardLocation);
-                        controlGraphics.DrawRectangle(new Pen(tilteBgColor.Color), BoardLocation.X, BoardLocation.Y, BoardSize.Width, BoardSize.Height);
+                        controlGraphics.DrawRectangle(new Pen(tileBgBlack.Color), BoardLocation.X, BoardLocation.Y, BoardSize.Width, BoardSize.Height);
                     }
                      
                 }
@@ -165,7 +174,7 @@ namespace TINKIN01.Controls
             if (SelectedMove == null || SelectedMove.IsDefault() || (!SelectedMove.Start.Equals(Chess.Move.DefaultCoodtinate) && !SelectedMove.End.Equals(Chess.Move.DefaultCoodtinate)))
                 SelectedMove = new Move();
 
-            if (SelectedMove.Start.Equals(Chess.Move.DefaultCoodtinate) && (board[coordinate] != null &&
+            if (SelectedMove.Start.Equals(Chess.Move.DefaultCoodtinate) || (board[coordinate] != null &&
                 board[coordinate].Owner == Board.CurrentPlayer))
             {
                 //Selected our start

@@ -5,11 +5,7 @@ namespace TINKIN01.Chess.Pieces
 {
     public struct Knight : IChesspiece
     {
-        public TeamEnum Team
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
+        public TeamEnum Team { get; set; }
 
         public int Value
         {

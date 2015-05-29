@@ -26,6 +26,6 @@ namespace TINKIN01.Chess.Pieces
         /// <summary>
         /// The (RELATIVE) moves this move can make
         /// </summary>
-        Point[] Moves { get; private set; }
+        Point[] Moves { get;  }
     }
 }

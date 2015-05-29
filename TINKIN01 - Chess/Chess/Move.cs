@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using TINKIN01.Chess.Pieces;
 
 namespace TINKIN01.Chess
@@ -10,12 +11,9 @@ namespace TINKIN01.Chess
         /// </summary>
         public Point Start
         {
-            get
-            {
-                
-            }
+            get { throw new NotImplementedException(); }
             set
-            {
+            {throw new NotImplementedException();
             }
         }
 

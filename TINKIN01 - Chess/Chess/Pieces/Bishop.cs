@@ -5,11 +5,7 @@ namespace TINKIN01.Chess.Pieces
 {
     public struct Bishop : IChesspiece
     {
-        public TeamEnum Team
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
+        public TeamEnum Team { get; set; }
 
         public int Value
         {
@@ -19,8 +15,10 @@ namespace TINKIN01.Chess.Pieces
 
         public Point[] Moves
         {
-            get { 
-                return new[] {
+            get
+            {
+                return new[]
+                {
                     new Point(1, 1),
                     new Point(2, 2),
                     new Point(3, 3),
@@ -49,7 +47,7 @@ namespace TINKIN01.Chess.Pieces
                     new Point(-5, -5),
                     new Point(-6, -6),
                     new Point(-7, -7)
-                }
+                };
             }
             private set { throw new NotImplementedException(); }
         }

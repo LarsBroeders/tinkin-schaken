@@ -5,7 +5,6 @@ namespace TINKIN01.Chess.Pieces
 {
     public struct Queen : IChesspiece
     {
-
         private Point[] moves = new[] {
                     new Point(0, 1),    new Point(0, 2),    new Point(0, 3),    new Point(0, 4),    new Point(0, 5),    new Point(0, 6),    new Point(0, 7),
                     new Point(0, -1),   new Point(0, -2),   new Point(0, -3),   new Point(0, -4),   new Point(0, -5),   new Point(0, -6),   new Point(0, -7),

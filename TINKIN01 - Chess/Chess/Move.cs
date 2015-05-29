@@ -12,7 +12,7 @@ namespace TINKIN01.Chess
         {
             get
             {
-                throw new System.NotImplementedException();
+                
             }
             set
             {

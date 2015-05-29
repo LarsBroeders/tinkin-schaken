@@ -1,4 +1,6 @@
-﻿namespace TINKIN01
+﻿using TINKIN01.Chess;
+
+namespace TINKIN01
 {
     partial class Form1
     {
@@ -33,7 +35,7 @@
             // 
             // chessComponent1
             // 
-            this.chessComponent1.Board = null;
+            this.chessComponent1.Board = Chessboard.StartPosition(); ;
             this.chessComponent1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.chessComponent1.Location = new System.Drawing.Point(0, 0);
             this.chessComponent1.Name = "chessComponent1";

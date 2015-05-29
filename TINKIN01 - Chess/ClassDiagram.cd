@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="TINKIN01.Chess.Move">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Chess\Move.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TINKIN01.Chess.Chessboard">
+    <Position X="5.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Chess\Chessboard.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TINKIN01.Controls.ChessComponent">
+    <Position X="5.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAACAAAACAAAAAAAAAAAAACAAAAA=</HashCode>
+      <FileName>Controls\ChessComponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="TINKIN01.Chess.Pieces.Bischop" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAEAAgAAAAAAA=</HashCode>
+      <FileName>Chess\Pieces\Bischop.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="TINKIN01.Chess.Pieces.King" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAEAAgAAAAAAA=</HashCode>
+      <FileName>Chess\Pieces\King.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="TINKIN01.Chess.Pieces.Pawn" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAEAAgAAAAAAA=</HashCode>
+      <FileName>Chess\Pieces\Pawn.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="TINKIN01.Chess.Pieces.Knight" BaseTypeListCollapsed="true">
+    <Position X="4" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAEAAgAAAAAAA=</HashCode>
+      <FileName>Chess\Pieces\Knight.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="TINKIN01.Chess.Pieces.Queen" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAEAAgAAAAAAA=</HashCode>
+      <FileName>Chess\Pieces\Queen.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="TINKIN01.Chess.Pieces.Rook" BaseTypeListCollapsed="true">
+    <Position X="4" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAEAAgAAAAAAA=</HashCode>
+      <FileName>Chess\Pieces\Rook.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Interface Name="TINKIN01.Chess.Pieces.IChesspiece">
+    <Position X="2.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAEAAgAAAAAAA=</HashCode>
+      <FileName>Chess\Pieces\IChesspiece.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="TINKIN01.Chess.TeamEnum">
+    <Position X="0.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Chess\TeamEnum.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

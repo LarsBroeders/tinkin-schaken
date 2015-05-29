@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Security.Cryptography.X509Certificates;
 
 namespace TINKIN01.Chess.Pieces
@@ -26,6 +27,6 @@ namespace TINKIN01.Chess.Pieces
         /// <summary>
         /// The (RELATIVE) moves this move can make
         /// </summary>
-        Point[] Moves { get;  }
+        IEnumerable<Move> GetValidMoves(Chessboard board);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace TINKIN01.Chess.Pieces
@@ -7,17 +8,11 @@ namespace TINKIN01.Chess.Pieces
     {
         public TeamEnum Team { get; set; }
 
-        public int Value
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
+        public int Value { get; set; }
 
-        public Point[] Moves
+        public IEnumerable<Move> GetValidMoves(Chessboard board)
         {
-            get
-            {
-                return new[] {
+         /*       return new[] {
                     new Point(0, 1),
                     new Point(0, 2),
                     new Point(0, 3),
@@ -46,9 +41,8 @@ namespace TINKIN01.Chess.Pieces
                     new Point(-5, 0),
                     new Point(-6, 0),
                     new Point(-7, 0)
-                };
-            }
-            private set { throw new NotImplementedException(); }
+                };*/
+            return null;
         }
     }
 }

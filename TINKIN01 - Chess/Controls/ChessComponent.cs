@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using TINKIN01.Chess;
 using TINKIN01.Chess.Pieces;
@@ -36,6 +31,11 @@ namespace TINKIN01.Controls
         /// </summary>
         private SizeF TileSize { get; set; }
 
+        /// <summary>
+        /// The move to draw
+        /// </summary>
+        public Move SelectedMove { get; set; }
+
         public ChessComponent()
         {
             Board = Chessboard.StartPosition();
@@ -52,7 +52,7 @@ namespace TINKIN01.Controls
             var size = Math.Min(Width, Height);
             BoardLocation = new Point((Width - size) / 2, (Height - size) / 2);
             BoardSize = new Size(size, size);
-            TileSize = new SizeF((float)size / 8f, (float)size/8f);
+            TileSize = new SizeF(size / 8f, size/8f);
 
             //Calling the base
             base.OnSizeChanged(e);
@@ -70,7 +70,7 @@ namespace TINKIN01.Controls
                 {
                     //Defining the colors
                     var tilteBgColor = new SolidBrush(Color.FromArgb(77, 109, 146));
-                    var titleBgWhite = new SolidBrush(Color.FromArgb(200, 200, 200));
+                    var titleBgWhite = new SolidBrush(Color.FromArgb(220, 220, 220));
                     var imageAttr = new ImageAttributes();
 
                     //Draw the game on boardgraphics, using floats for less conversion
@@ -89,14 +89,14 @@ namespace TINKIN01.Controls
                             //Draw piece
                             if (Board != null && Board[x, y] != null)
                             {
-                                var chessPieceBMP = Board[x, y].GetBitmap();
+                                var chessPieceBmp = Board[x, y].GetBitmap();
                                 var margin = TileSize.Width*0.1f;
                                 var destRect = new Rectangle((int)Math.Round(destRectF.X + margin), (int)Math.Round(destRectF.Y + margin),
                                 (int)Math.Round(destRectF.Width - margin * 2f), (int)Math.Round(destRectF.Height - margin * 2f));
                                 
 
-                                boardGraphics.DrawImage(chessPieceBMP, destRect, 0, 0, chessPieceBMP.Width,
-                                    chessPieceBMP.Height, GraphicsUnit.Pixel, imageAttr);
+                                boardGraphics.DrawImage(chessPieceBmp, destRect, 0, 0, chessPieceBmp.Width,
+                                    chessPieceBmp.Height, GraphicsUnit.Pixel, imageAttr);
                             }
                         }
                     }
@@ -121,13 +121,18 @@ namespace TINKIN01.Controls
         /// <summary>
         /// A cache like dictionary for bitmaps
         /// </summary>
-        private static Dictionary<string, Bitmap> BitmapCache;
+        private static Dictionary<string, Bitmap> _bitmapCache;
 
+        /// <summary>
+        /// Gets the bitmap for this ICHesspiece
+        /// </summary>
+        /// <param name="piece"></param>
+        /// <returns></returns>
         public static Bitmap GetBitmap(this IChesspiece piece)
         {
-            if (BitmapCache == null)
+            if (_bitmapCache == null)
             {
-                List<string> files = new List<string>()
+                List<string> files = new List<string>
                 {
                     "BBishop.png",
                     "BKing.png",
@@ -143,20 +148,20 @@ namespace TINKIN01.Controls
                     "WRook.png"
                 };
 
-                BitmapCache = new Dictionary<string, Bitmap>();
+                _bitmapCache = new Dictionary<string, Bitmap>();
                 var imageDir = Path.GetDirectoryName(Application.ExecutablePath) + "\\Images\\";
                 foreach (var file in files)
                 {
                     string name = Path.GetFileNameWithoutExtension(file).ToLower();
                     string url = Path.Combine(imageDir, file);
 
-                    BitmapCache.Add(name, new Bitmap(url));
+                    _bitmapCache.Add(name, new Bitmap(url));
                 }
             }
 
             string bitmapName = piece.Team.ToString().Substring(0, 1) + piece.GetType().Name;
 
-            return BitmapCache[bitmapName.ToLower()];
+            return _bitmapCache[bitmapName.ToLower()];
         }
     }
 }

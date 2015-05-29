@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -105,14 +106,39 @@ namespace TINKIN01.Controls
         /// <summary>
         /// A cache like dictionary for bitmaps
         /// </summary>
-        private static Dictionary<Type, Bitmap> BitmapCache;
+        private static Dictionary<string, Bitmap> BitmapCache;
 
         public static Bitmap GetBitmap(this IChesspiece piece)
         {
             if (BitmapCache == null)
             {
-                
+                List<string> files = new List<string>()
+                {
+                    "BBischop.png",
+                    "BKing.png",
+                    "BKnight.png",
+                    "BPawn.png",
+                    "BQueen.png",
+                    "BRook.png",
+                    "WBischop.png",
+                    "WKing.png",
+                    "WKnight.png",
+                    "WPawn.png",
+                    "WQueen.png",
+                    "WRook.png"
+                };
+
+                BitmapCache = new Dictionary<string, Bitmap>();
+                foreach (var file in files)
+                {
+                    string name = Path.GetFileNameWithoutExtension(file).ToLower();
+                    string url = Path.Combine(Application.ExecutablePath, file);
+
+                    BitmapCache.Add(name, new Bitmap(url));
+                }
             }
+
+            string bitmapName = piece.Team.ToString().Substring(0, 1) ;
 
             return null;
         }

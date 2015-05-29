@@ -2,5 +2,7 @@
 {
     public enum TeamEnum
     {
+        Black,
+        White
     }
 }

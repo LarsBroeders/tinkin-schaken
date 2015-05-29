@@ -48,5 +48,10 @@ namespace TINKIN01.Chess
         {
             throw new System.NotImplementedException();
         }
+
+        public static Chessboard StartPosition()
+        {
+            
+        }
     }
 }

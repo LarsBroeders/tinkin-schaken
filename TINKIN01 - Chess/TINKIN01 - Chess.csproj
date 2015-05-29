@@ -45,9 +45,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Chess\Chessboard.cs" />
+    <Compile Include="Chess\ChessboardStateEnum.cs" />
+    <Compile Include="Chess\Extensions\ChesspiecesExtension.cs" />
+    <Compile Include="Chess\MoveEventArgs.cs" />
     <Compile Include="Chess\Pieces\Bishop.cs" />
     <Compile Include="Chess\Pieces\King.cs" />
     <Compile Include="Chess\Pieces\Queen.cs" />
+    <Compile Include="Chess\Players\ChessAI.cs" />
+    <Compile Include="Chess\Players\Human.cs" />
+    <Compile Include="Chess\TeamEnum.cs" />
     <Compile Include="Controls\ChessComponent.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -60,14 +66,17 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Chess\Pieces\IChesspiece.cs" />
+    <Compile Include="Chess\Pieces\Chesspiece.cs" />
     <Compile Include="Chess\Move.cs" />
     <Compile Include="Chess\Pieces\Knight.cs" />
     <Compile Include="Chess\Pieces\Pawn.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Chess\TeamEnum.cs" />
+    <Compile Include="Chess\Player.cs" />
     <Compile Include="Chess\Pieces\Rook.cs" />
+    <EmbeddedResource Include="Controls\ChessComponent.resx">
+      <DependentUpon>ChessComponent.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

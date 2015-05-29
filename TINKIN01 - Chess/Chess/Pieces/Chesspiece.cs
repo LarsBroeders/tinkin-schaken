@@ -4,12 +4,12 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace TINKIN01.Chess.Pieces
 {
-    public interface IChesspiece
+    public abstract class Chesspiece
     {
         /// <summary>
-        /// 
+        /// The owner of the piece
         /// </summary>
-        TeamEnum Team
+        public Player Owner
         {
             get;
             set;
@@ -18,7 +18,7 @@ namespace TINKIN01.Chess.Pieces
         /// <summary>
         /// The value (in points) of the piece
         /// </summary>
-        int Value
+        public  int Value
         {
             get;
             set;
@@ -27,6 +27,6 @@ namespace TINKIN01.Chess.Pieces
         /// <summary>
         /// The (RELATIVE) moves this move can make
         /// </summary>
-        IEnumerable<Move> GetValidMoves(Chessboard board);
+        public abstract IEnumerable<Move> GetValidMoves(Chessboard board);
     }
 }

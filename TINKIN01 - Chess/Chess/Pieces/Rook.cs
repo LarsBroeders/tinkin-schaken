@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 
 namespace TINKIN01.Chess.Pieces
 {
-    public struct Rook : IChesspiece
+    [DebuggerDisplay("Rook, Owner = {Owner.Team}")]
+    public class Rook : Chesspiece
     {
-        public TeamEnum Team { get; set; }
-
-        public int Value { get; set; }
-
-        public IEnumerable<Move> GetValidMoves(Chessboard board)
+        public override IEnumerable<Move> GetValidMoves(Chessboard board)
         {
          /*       return new[] {
                     new Point(0, 1),

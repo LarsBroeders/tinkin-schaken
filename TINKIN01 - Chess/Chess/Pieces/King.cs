@@ -8,9 +8,24 @@ namespace TINKIN01.Chess.Pieces
     [DebuggerDisplay("King, Owner = {Owner.Team}")]
     public class King : Chesspiece
     {
+        /* Returns all possible moves for this Piece, without a check for other pieces.
+         * 
+         * With the problem that the random move generator generates move off the chessboard.
+         */
         public override IEnumerable<Move> GetValidMoves(Chessboard board)
         {
-            return null;
+            var start = board.IndexOf(this);
+            //var end = new Point();
+
+            return new[] { 
+                new Move(start, new Point(start.X - 1, start.Y - 1), this), 
+                new Move(start, new Point(start.X + 1, start.Y + 1), this),
+                new Move(start, new Point(start.X - 1, start.Y + 1), this), 
+                new Move(start, new Point(start.X + 1, start.Y - 1), this),
+                new Move(start, new Point(start.X, start.Y - 1), this), 
+                new Move(start, new Point(start.X, start.Y + 1), this), 
+                new Move(start, new Point(start.X - 1, start.Y), this), 
+                new Move(start, new Point(start.X + 1, start.Y), this)};
             /*return new[] {
                 new Point(0, 1),
                 new Point(1, 0),

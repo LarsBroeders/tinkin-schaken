@@ -2,14 +2,53 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using TINKIN01.Chess.Pieces;
+
 
 namespace TINKIN01.Chess.Pieces
 {
     [DebuggerDisplay("Rook, Owner = {Owner.Team}")]
     public class Rook : Chesspiece
     {
+        /* Returns all possible moves for this Piece, without a check for other pieces.
+         * 
+         * With the problem that the random move generator generates move off the chessboard.
+         */
         public override IEnumerable<Move> GetValidMoves(Chessboard board)
         {
+            var start = board.IndexOf(this);
+            //var end = new Point();
+
+            return new[] { 
+                new Move(start, new Point(start.X, start.Y - 1), this), 
+                new Move(start, new Point(start.X, start.Y - 2), this), 
+                new Move(start, new Point(start.X, start.Y - 3), this), 
+                new Move(start, new Point(start.X, start.Y - 4), this), 
+                new Move(start, new Point(start.X, start.Y - 5), this), 
+                new Move(start, new Point(start.X, start.Y - 6), this), 
+                new Move(start, new Point(start.X, start.Y - 7), this), 
+                new Move(start, new Point(start.X, start.Y + 1), this), 
+                new Move(start, new Point(start.X, start.Y + 2), this), 
+                new Move(start, new Point(start.X, start.Y + 3), this), 
+                new Move(start, new Point(start.X, start.Y + 4), this), 
+                new Move(start, new Point(start.X, start.Y + 5), this), 
+                new Move(start, new Point(start.X, start.Y + 6), this), 
+                new Move(start, new Point(start.X, start.Y + 7), this), 
+                new Move(start, new Point(start.X - 1, start.Y), this), 
+                new Move(start, new Point(start.X - 2, start.Y), this), 
+                new Move(start, new Point(start.X - 3, start.Y), this), 
+                new Move(start, new Point(start.X - 4, start.Y), this), 
+                new Move(start, new Point(start.X - 5, start.Y), this), 
+                new Move(start, new Point(start.X - 6, start.Y), this), 
+                new Move(start, new Point(start.X - 7, start.Y), this), 
+                new Move(start, new Point(start.X + 1, start.Y), this), 
+                new Move(start, new Point(start.X + 2, start.Y), this), 
+                new Move(start, new Point(start.X + 3, start.Y), this), 
+                new Move(start, new Point(start.X + 4, start.Y), this), 
+                new Move(start, new Point(start.X + 5, start.Y), this), 
+                new Move(start, new Point(start.X + 6, start.Y), this), 
+                new Move(start, new Point(start.X + 7, start.Y), this)};
+
          /*       return new[] {
                     new Point(0, 1),
                     new Point(0, 2),
@@ -40,7 +79,6 @@ namespace TINKIN01.Chess.Pieces
                     new Point(-6, 0),
                     new Point(-7, 0)
                 };*/
-            return null;
         }
     }
 }

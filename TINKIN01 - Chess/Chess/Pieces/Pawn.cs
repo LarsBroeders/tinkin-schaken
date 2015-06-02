@@ -12,13 +12,25 @@ namespace TINKIN01.Chess.Pieces
         {
             //JUST FOR DEVEOPMENT PURPOSES
            var start = board.IndexOf(this);
-           var end = new Point();
+           //var end = new Point();
            if (Owner.Team == TeamEnum.Black)
-               end = new Point(start.X, start.Y + 1);
+               if (start.Y.Equals(1))
+               {
+                   return new[] { new Move(start, new Point(start.X, start.Y + 1), this), new Move(start, new Point(start.X, start.Y + 2), this) };
+               }
+               else
+               {
+                   return new[] { new Move(start, new Point(start.X, start.Y + 1), this) };
+               }
            else
-               end = new Point(start.X, start.Y - 1);
-
-           return new[] {new Move(start, end, this)};
+               if (start.Y.Equals(6))
+               {
+                   return new[] { new Move(start, new Point(start.X, start.Y - 1), this), new Move(start, new Point(start.X, start.Y - 2), this) };
+               }
+               else
+               {
+                   return new[] { new Move(start, new Point(start.X, start.Y - 1), this) };
+               }
            /*return new[]
            {
                new Point(0, 1)

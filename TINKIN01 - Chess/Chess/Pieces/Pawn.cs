@@ -16,50 +16,50 @@ namespace TINKIN01.Chess.Pieces
            if (Owner.Team == TeamEnum.Black)
            {
                end = new Point(start.X, start.Y + 1);
-               if (board.IsEmpty(end))
+               if (board.isValidField(end, Owner))
                {
                    moves.Add(new Move(start, end, this));
                }
                if (board.IsUnmoved(this))
                {
                    end = new Point(start.X, start.Y + 2);
-                   if (board.IsEmpty(end))
+                   if (board.isValidField(end, Owner))
                    {
                        moves.Add(new Move(start, end, this));
                    }
                }
                end = new Point(start.X + 1, start.Y + 1);
-               if (!board.IsEmpty(end))
+               if (!board.isValidField(end, Owner))
                {
                    moves.Add(new Move(start, end, this));
                }
                end = new Point(start.X - 1 , start.Y + 1);
-               if (!board.IsEmpty(end))
+               if (!board.isValidField(end, Owner))
                {
                    moves.Add(new Move(start, end, this));
                }
            } else
            {
                end = new Point(start.X, start.Y - 1);
-               if (board.IsEmpty(end))
+               if (board.isValidField(end, Owner))
                {
                    moves.Add(new Move(start, end, this));
                }
                if (board.IsUnmoved(this))
                {
                    end = new Point(start.X, start.Y - 2);
-                   if (board.IsEmpty(end))
+                   if (board.isValidField(end, Owner))
                    {
                        moves.Add(new Move(start, end, this));
                    }
                }
                end = new Point(start.X + 1, start.Y - 1);
-               if (!board.IsEmpty(end))
+               if (!board.isValidField(end, Owner))
                {
                    moves.Add(new Move(start, end, this));
                }
                end = new Point(start.X - 1, start.Y - 1);
-               if (!board.IsEmpty(end))
+               if (!board.isValidField(end, Owner))
                {
                    moves.Add(new Move(start, end, this));
                }

@@ -98,7 +98,7 @@ namespace TINKIN01.Chess
             return true;
         }
 
-        public Boolean IsEmpty(Point point)
+        public Boolean isValidField(Point point, Player owner)
         {
             Chesspiece piece;
             try
@@ -106,7 +106,7 @@ namespace TINKIN01.Chess
                 piece = Pieces[point.X, point.Y];
                 piece.GetType();
             }
-            catch (IndexOutOfRangeException e)
+            catch (IndexOutOfRangeException)
             {
                 return false;
             }
@@ -114,7 +114,7 @@ namespace TINKIN01.Chess
             {
                 return true;
             }
-            return false;
+            return piece.Owner.Equals(owner);
         }
 
         /// <summary>

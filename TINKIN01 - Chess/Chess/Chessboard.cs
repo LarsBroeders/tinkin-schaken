@@ -44,7 +44,9 @@ namespace TINKIN01.Chess
             }
         }
         private ChessboardStateEnum _state;
- 
+
+        public HashSet<Move> madeMoves { get; set; }
+    
         /// <summary>
         /// Gets the index of a piece
         /// </summary>
@@ -86,6 +88,33 @@ namespace TINKIN01.Chess
         {
             get { return Pieces[point.X, point.Y]; }
             set { Pieces[point.X, point.Y] = value; }
+        }
+
+        public Boolean IsUnmoved(Chesspiece chesspiece){
+            foreach(Move move in madeMoves){
+                if(move.Piece.Equals(chesspiece))
+                    return false;
+            }
+            return true;
+        }
+
+        public Boolean IsEmpty(Point point)
+        {
+            Chesspiece piece;
+            try
+            {
+                piece = Pieces[point.X, point.Y];
+                piece.GetType();
+            }
+            catch (IndexOutOfRangeException e)
+            {
+                return false;
+            }
+            catch (NullReferenceException)
+            {
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -145,6 +174,7 @@ namespace TINKIN01.Chess
             Player2 = player2;
             Pieces = new Chesspiece[8,8];
             State = ChessboardStateEnum.Paused;
+            madeMoves = new HashSet<Move>();
         }
 
         /// <summary>
@@ -190,6 +220,8 @@ namespace TINKIN01.Chess
 
             if (MoveMadeEvent != null)
                 MoveMadeEvent(this, new MoveEventArgs{EnteredMove =  move});
+            
+            madeMoves.Add(move);
             Console.WriteLine("Move Made: {0} {1} to {2};{3}", move.Piece.GetType().Name, move.Piece.Owner.Team, move.End.X, move.End.Y);
 
             MakeMove();

@@ -8,7 +8,7 @@ namespace TINKIN01.Chess.Pieces
     [DebuggerDisplay("Bishop, Owner = {Owner.Team}")]
     public class Bishop : Chesspiece
     {
-        public override IEnumerable<Move> GetValidMoves(Chessboard board)
+        public override HashSet<Move> GetValidMoves(Chessboard board)
         {
             return null; /*
                 return new[]

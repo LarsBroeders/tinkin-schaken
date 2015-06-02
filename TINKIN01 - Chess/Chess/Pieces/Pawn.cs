@@ -65,7 +65,6 @@ namespace TINKIN01.Chess.Pieces
                }
            }
            return moves;
-           
        }
     }
 }

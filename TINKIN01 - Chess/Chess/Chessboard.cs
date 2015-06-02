@@ -213,17 +213,15 @@ namespace TINKIN01.Chess
         public void ExecuteMove(Move move)
         {
             //Executing the move
+            Console.WriteLine("Move Made: {0} {1} to {2};{3}", move.Piece.GetType().Name, move.Piece.Owner.Team, move.End.X, move.End.Y);
             CurrentPlayer = CurrentPlayer == Player1 ? Player2 : Player1;
             this[move.End] = this[move.Start];
             this[move.Start] = null;
-            
 
             if (MoveMadeEvent != null)
                 MoveMadeEvent(this, new MoveEventArgs{EnteredMove =  move});
             
             madeMoves.Add(move);
-            Console.WriteLine("Move Made: {0} {1} to {2};{3}", move.Piece.GetType().Name, move.Piece.Owner.Team, move.End.X, move.End.Y);
-
             MakeMove();
         }
 

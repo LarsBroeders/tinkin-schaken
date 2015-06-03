@@ -15,112 +15,38 @@ namespace TINKIN01.Chess.Pieces
             Point end;
 
             end = new Point(start.X, start.Y + 1);
-            if (board.IsValidField(end, Owner))
-            {
+            if (board.IsValidField(end, Owner) || board.IsValidField(end, Owner, false))
                 moves.Add(new Move(start, end, this));
-            }
-
-            end = new Point(start.X + 1, start.Y);
-            if (board.IsValidField(end, Owner))
-            {
-                moves.Add(new Move(start, end, this));
-            }
 
             end = new Point(start.X, start.Y - 1);
-            if (board.IsValidField(end, Owner))
-            {
+            if (board.IsValidField(end, Owner) || board.IsValidField(end, Owner, false))
                 moves.Add(new Move(start, end, this));
-            }
 
             end = new Point(start.X - 1, start.Y);
-            if (board.IsValidField(end, Owner))
-            {
+            if (board.IsValidField(end, Owner) || board.IsValidField(end, Owner, false))
                 moves.Add(new Move(start, end, this));
-            }
-
-            end = new Point(start.X + 1, start.Y + 1);
-            if (board.IsValidField(end, Owner))
-            {
-                moves.Add(new Move(start, end, this));
-            }
-
-            end = new Point(start.X + 1, start.Y - 1);
-            if (board.IsValidField(end, Owner))
-            {
-                moves.Add(new Move(start, end, this));
-            }
-
-            end = new Point(start.X - 1, start.Y + 1);
-            if (board.IsValidField(end, Owner))
-            {
-                moves.Add(new Move(start, end, this));
-            }
-
-            end = new Point(start.X - 1, start.Y - 1);
-            if (board.IsValidField(end, Owner))
-            {
-                moves.Add(new Move(start, end, this));
-            }
-
-            end = new Point(start.X, start.Y + 1);
-            if (board.IsValidField(end, Owner, false))
-            {
-                moves.Add(new Move(start, end, this));
-            }
 
             end = new Point(start.X + 1, start.Y);
-            if (board.IsValidField(end, Owner, false))
-            {
+            if (board.IsValidField(end, Owner) || board.IsValidField(end, Owner, false))
                 moves.Add(new Move(start, end, this));
-            }
-
-            end = new Point(start.X, start.Y - 1);
-            if (board.IsValidField(end, Owner, false))
-            {
-                moves.Add(new Move(start, end, this));
-            }
-
-            end = new Point(start.X - 1, start.Y);
-            if (board.IsValidField(end, Owner, false))
-            {
-                moves.Add(new Move(start, end, this));
-            }
 
             end = new Point(start.X + 1, start.Y + 1);
-            if (board.IsValidField(end, Owner, false))
-            {
+            if (board.IsValidField(end, Owner) || board.IsValidField(end, Owner, false))
                 moves.Add(new Move(start, end, this));
-            }
 
             end = new Point(start.X + 1, start.Y - 1);
-            if (board.IsValidField(end, Owner, false))
-            {
+            if (board.IsValidField(end, Owner) || board.IsValidField(end, Owner, false))
                 moves.Add(new Move(start, end, this));
-            }
 
             end = new Point(start.X - 1, start.Y + 1);
-            if (board.IsValidField(end, Owner, false))
-            {
+            if (board.IsValidField(end, Owner) || board.IsValidField(end, Owner, false))
                 moves.Add(new Move(start, end, this));
-            }
 
             end = new Point(start.X - 1, start.Y - 1);
-            if (board.IsValidField(end, Owner, false))
-            {
+            if (board.IsValidField(end, Owner) || board.IsValidField(end, Owner, false))
                 moves.Add(new Move(start, end, this));
-            }
 
             return moves;
-            /*return new[] {
-                new Point(0, 1),
-                new Point(1, 0),
-                new Point(0, -1),
-                new Point(-1, 0),
-                new Point(1, 1),
-                new Point(1, -1),
-                new Point(-1, 1),
-                new Point(-1, -1)
-            };*/
         }
     }
 }

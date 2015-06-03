@@ -25,7 +25,7 @@ namespace TINKIN01.Chess.Pieces
         }
 
         /// <summary>
-        /// The (RELATIVE) moves this move can make
+        /// All valid moves this chesspiece can make
         /// </summary>
         public abstract HashSet<Move> GetValidMoves(Chessboard board);
     }

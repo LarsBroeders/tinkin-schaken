@@ -90,31 +90,26 @@ namespace TINKIN01.Chess
             set { Pieces[point.X, point.Y] = value; }
         }
 
-        public Boolean IsUnmoved(Chesspiece chesspiece){
-            foreach(Move move in madeMoves){
-                if(move.Piece.Equals(chesspiece))
-                    return false;
-            }
-            return true;
+        /// <summary>
+        /// Wether a move has been moved yet
+        /// </summary>
+        /// <param name="chesspiece"></param>
+        /// <returns></returns>
+        public Boolean IsUnmoved(Chesspiece chesspiece)
+        {
+            return madeMoves.All(move => move.Piece != chesspiece);
         }
 
-        public Boolean isValidField(Point point, Player owner)
+
+        public Boolean IsValidField(Point point, Player owner)
         {
-            Chesspiece piece;
-            try
-            {
-                piece = Pieces[point.X, point.Y];
-                piece.GetType();
-            }
-            catch (IndexOutOfRangeException)
-            {
+            if (point.X > 8 || point.Y > 8 || point.X < 0 || point.Y < 0)
                 return false;
-            }
-            catch (NullReferenceException)
-            {
-                return true;
-            }
-            return piece.Owner.Equals(owner);
+
+            if (Pieces[point.X, point.Y].Owner == null)
+                return false;
+
+            return Pieces[point.X, point.Y].Owner == owner;
         }
 
         /// <summary>
@@ -132,7 +127,7 @@ namespace TINKIN01.Chess
 
         
         /// <summary>
-        /// Gets all moves of a cirtain chesspiece, including local validation check
+        /// Gets all valid moves of a cirtain chesspiece
         /// </summary>
         /// <param name="chesspiece"></param>
         /// <returns></returns>
@@ -142,7 +137,7 @@ namespace TINKIN01.Chess
         }
 
         /// <summary>
-        /// Gets all moves of a cirtain chesspiece, including local validation check
+        /// Gets all valid moves of a cirtain player
         /// </summary>
         /// <param name="player"></param>
         /// <returns></returns>

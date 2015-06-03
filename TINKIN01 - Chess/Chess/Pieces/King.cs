@@ -11,17 +11,106 @@ namespace TINKIN01.Chess.Pieces
         public override HashSet<Move> GetValidMoves(Chessboard board)
         {
             var start = board.IndexOf(this);
-            //var end = new Point();
-            return null;
-            //return new[] { 
-            //    new Move(start, new Point(start.X - 1, start.Y - 1), this), 
-            //    new Move(start, new Point(start.X + 1, start.Y + 1), this),
-            //    new Move(start, new Point(start.X - 1, start.Y + 1), this), 
-            //    new Move(start, new Point(start.X + 1, start.Y - 1), this),
-            //    new Move(start, new Point(start.X, start.Y - 1), this), 
-            //    new Move(start, new Point(start.X, start.Y + 1), this), 
-            //    new Move(start, new Point(start.X - 1, start.Y), this), 
-            //    new Move(start, new Point(start.X + 1, start.Y), this)};
+            var moves = new HashSet<Move>();
+            Point end;
+
+            end = new Point(start.X, start.Y + 1);
+            if (board.IsValidField(end, Owner))
+            {
+                moves.Add(new Move(start, end, this));
+            }
+
+            end = new Point(start.X + 1, start.Y);
+            if (board.IsValidField(end, Owner))
+            {
+                moves.Add(new Move(start, end, this));
+            }
+
+            end = new Point(start.X, start.Y - 1);
+            if (board.IsValidField(end, Owner))
+            {
+                moves.Add(new Move(start, end, this));
+            }
+
+            end = new Point(start.X - 1, start.Y);
+            if (board.IsValidField(end, Owner))
+            {
+                moves.Add(new Move(start, end, this));
+            }
+
+            end = new Point(start.X + 1, start.Y + 1);
+            if (board.IsValidField(end, Owner))
+            {
+                moves.Add(new Move(start, end, this));
+            }
+
+            end = new Point(start.X + 1, start.Y - 1);
+            if (board.IsValidField(end, Owner))
+            {
+                moves.Add(new Move(start, end, this));
+            }
+
+            end = new Point(start.X - 1, start.Y + 1);
+            if (board.IsValidField(end, Owner))
+            {
+                moves.Add(new Move(start, end, this));
+            }
+
+            end = new Point(start.X - 1, start.Y - 1);
+            if (board.IsValidField(end, Owner))
+            {
+                moves.Add(new Move(start, end, this));
+            }
+
+            end = new Point(start.X, start.Y + 1);
+            if (board.IsValidField(end, Owner, false))
+            {
+                moves.Add(new Move(start, end, this));
+            }
+
+            end = new Point(start.X + 1, start.Y);
+            if (board.IsValidField(end, Owner, false))
+            {
+                moves.Add(new Move(start, end, this));
+            }
+
+            end = new Point(start.X, start.Y - 1);
+            if (board.IsValidField(end, Owner, false))
+            {
+                moves.Add(new Move(start, end, this));
+            }
+
+            end = new Point(start.X - 1, start.Y);
+            if (board.IsValidField(end, Owner, false))
+            {
+                moves.Add(new Move(start, end, this));
+            }
+
+            end = new Point(start.X + 1, start.Y + 1);
+            if (board.IsValidField(end, Owner, false))
+            {
+                moves.Add(new Move(start, end, this));
+            }
+
+            end = new Point(start.X + 1, start.Y - 1);
+            if (board.IsValidField(end, Owner, false))
+            {
+                moves.Add(new Move(start, end, this));
+            }
+
+            end = new Point(start.X - 1, start.Y + 1);
+            if (board.IsValidField(end, Owner, false))
+            {
+                moves.Add(new Move(start, end, this));
+            }
+
+            end = new Point(start.X - 1, start.Y - 1);
+            if (board.IsValidField(end, Owner, false))
+            {
+                moves.Add(new Move(start, end, this));
+            }
+
+            return moves;
             /*return new[] {
                 new Point(0, 1),
                 new Point(1, 0),

@@ -106,7 +106,7 @@ namespace TINKIN01.Chess
             if (point.X > 8 || point.Y > 8 || point.X < 0 || point.Y < 0)
                 return false;
 
-            if (Pieces[point.X, point.Y].Owner == null)
+            if (Pieces[point.X, point.Y] == null || Pieces[point.X, point.Y].Owner == null) 
                 return false;
 
             return Pieces[point.X, point.Y].Owner == owner;

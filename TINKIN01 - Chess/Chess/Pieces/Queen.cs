@@ -8,10 +8,6 @@ namespace TINKIN01.Chess.Pieces
     [DebuggerDisplay("Queen, Owner = {Owner.Team}")]
     public class Queen : Chesspiece
     {
-        /* Returns all possible moves for this Piece, without a check for other pieces.
-         * 
-         * With the problem that the random move generator generates move off the chessboard.
-         */
         public override HashSet<Move> GetValidMoves(Chessboard board)
         {
             var start = board.IndexOf(this);

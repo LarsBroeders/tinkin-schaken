@@ -29,12 +29,12 @@ namespace TINKIN01.Chess.Pieces
                    }
                }
                end = new Point(start.X + 1, start.Y + 1);
-               if (!board.IsValidField(end, Owner))
+               if (board.IsValidField(end, Owner, false))
                {
                    moves.Add(new Move(start, end, this));
                }
                end = new Point(start.X - 1 , start.Y + 1);
-               if (!board.IsValidField(end, Owner))
+               if (board.IsValidField(end, Owner, false))
                {
                    moves.Add(new Move(start, end, this));
                }
@@ -54,12 +54,12 @@ namespace TINKIN01.Chess.Pieces
                    }
                }
                end = new Point(start.X + 1, start.Y - 1);
-               if (!board.IsValidField(end, Owner))
+               if (board.IsValidField(end, Owner, false))
                {
                    moves.Add(new Move(start, end, this));
                }
                end = new Point(start.X - 1, start.Y - 1);
-               if (!board.IsValidField(end, Owner))
+               if (board.IsValidField(end, Owner, false))
                {
                    moves.Add(new Move(start, end, this));
                }

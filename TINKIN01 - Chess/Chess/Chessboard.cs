@@ -101,17 +101,24 @@ namespace TINKIN01.Chess
         }
 
 
-        public Boolean IsValidField(Point point, Player owner)
+        public Boolean IsValidField(Point point, Player owner, Boolean nil = true)
         {
-            //TODO: Move to IsInRange()
             if (point.X > 7 || point.Y > 7 || point.X < 0 || point.Y < 0)
                 return false;
 
-            //TODO: Move to IsOwnedBy(me)
-            if (Pieces[point.X, point.Y] == null || Pieces[point.X, point.Y].Owner == null) 
-                return true;
+            var IsNull = (Pieces[point.X, point.Y] == null || Pieces[point.X, point.Y].Owner == null);
 
-            return Pieces[point.X, point.Y].Owner == owner;
+            if (nil)
+            {
+                return IsNull;
+            }
+            else
+            {
+                if (IsNull)
+                    return false;
+                else
+                    return Pieces[point.X, point.Y].Owner != owner;
+            }
         }
 
         /// <summary>

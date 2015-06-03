@@ -97,17 +97,19 @@ namespace TINKIN01.Chess
         /// <returns></returns>
         public Boolean IsUnmoved(Chesspiece chesspiece)
         {
-            return MadeMoves.All(move => move.Piece != chesspiece);
+            return !MadeMoves.Any(move => move.Piece == chesspiece);
         }
 
 
         public Boolean IsValidField(Point point, Player owner)
         {
-            if (point.X > 8 || point.Y > 8 || point.X < 0 || point.Y < 0)
+            //TODO: Move to IsInRange()
+            if (point.X > 7 || point.Y > 7 || point.X < 0 || point.Y < 0)
                 return false;
 
+            //TODO: Move to IsOwnedBy(me)
             if (Pieces[point.X, point.Y] == null || Pieces[point.X, point.Y].Owner == null) 
-                return false;
+                return true;
 
             return Pieces[point.X, point.Y].Owner == owner;
         }

@@ -9,7 +9,7 @@ namespace TINKIN01.Chess.Pieces
     public class Pawn : Chesspiece
     {
        public override HashSet<Move> GetValidMoves(Chessboard board)
-        {
+       {
            var start = board.IndexOf(this);
            var moves = new HashSet<Move>();
            Point end;

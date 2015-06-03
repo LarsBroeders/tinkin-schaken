@@ -13,68 +13,66 @@ namespace TINKIN01.Chess.Pieces
         public override HashSet<Move> GetValidMoves(Chessboard board)
         {
             var start = board.IndexOf(this);
-            //var end = new Point();
-            return null;
-            //return new[] { 
-            //    new Move(start, new Point(start.X, start.Y - 1), this), 
-            //    new Move(start, new Point(start.X, start.Y - 2), this), 
-            //    new Move(start, new Point(start.X, start.Y - 3), this), 
-            //    new Move(start, new Point(start.X, start.Y - 4), this), 
-            //    new Move(start, new Point(start.X, start.Y - 5), this), 
-            //    new Move(start, new Point(start.X, start.Y - 6), this), 
-            //    new Move(start, new Point(start.X, start.Y - 7), this), 
-            //    new Move(start, new Point(start.X, start.Y + 1), this), 
-            //    new Move(start, new Point(start.X, start.Y + 2), this), 
-            //    new Move(start, new Point(start.X, start.Y + 3), this), 
-            //    new Move(start, new Point(start.X, start.Y + 4), this), 
-            //    new Move(start, new Point(start.X, start.Y + 5), this), 
-            //    new Move(start, new Point(start.X, start.Y + 6), this), 
-            //    new Move(start, new Point(start.X, start.Y + 7), this), 
-            //    new Move(start, new Point(start.X - 1, start.Y), this), 
-            //    new Move(start, new Point(start.X - 2, start.Y), this), 
-            //    new Move(start, new Point(start.X - 3, start.Y), this), 
-            //    new Move(start, new Point(start.X - 4, start.Y), this), 
-            //    new Move(start, new Point(start.X - 5, start.Y), this), 
-            //    new Move(start, new Point(start.X - 6, start.Y), this), 
-            //    new Move(start, new Point(start.X - 7, start.Y), this), 
-            //    new Move(start, new Point(start.X + 1, start.Y), this), 
-            //    new Move(start, new Point(start.X + 2, start.Y), this), 
-            //    new Move(start, new Point(start.X + 3, start.Y), this), 
-            //    new Move(start, new Point(start.X + 4, start.Y), this), 
-            //    new Move(start, new Point(start.X + 5, start.Y), this), 
-            //    new Move(start, new Point(start.X + 6, start.Y), this), 
-            //    new Move(start, new Point(start.X + 7, start.Y), this)};
+            var moves = new HashSet<Move>();
+            Point end;
 
-         /*       return new[] {
-                    new Point(0, 1),
-                    new Point(0, 2),
-                    new Point(0, 3),
-                    new Point(0, 4),
-                    new Point(0, 5),
-                    new Point(0, 6),
-                    new Point(0, 7),
-                    new Point(0, -1),
-                    new Point(0, -2),
-                    new Point(0, -3),
-                    new Point(0, -4),
-                    new Point(0, -5),
-                    new Point(0, -6),
-                    new Point(0, -7),
-                    new Point(1, 0),
-                    new Point(2, 0),
-                    new Point(3, 0),
-                    new Point(4, 0),
-                    new Point(5, 0),
-                    new Point(6, 0),
-                    new Point(7, 0),
-                    new Point(-1, 0),
-                    new Point(-2, 0),
-                    new Point(-3, 0),
-                    new Point(-4, 0),
-                    new Point(-5, 0),
-                    new Point(-6, 0),
-                    new Point(-7, 0)
-                };*/
+            for (int x = 1; x < (8 - start.X); x++)
+            {
+                end = new Point(start.X + x, start.Y);
+                if (board.IsValidField(end, Owner, false))
+                {
+                    moves.Add(new Move(start, end, this));
+                    break;
+                }
+                if (board.IsValidField(end, Owner))
+                    moves.Add(new Move(start, end, this));
+                else
+                    break;
+            }
+
+            for (int x = 1; x <= (start.X); x++)
+            {
+                end = new Point(start.X - x, start.Y);
+                if (board.IsValidField(end, Owner, false))
+                {
+                    moves.Add(new Move(start, end, this));
+                    break;
+                }
+                if (board.IsValidField(end, Owner))
+                    moves.Add(new Move(start, end, this));
+                else
+                    break;
+            }
+
+            for (int y = 1; y < (8 - start.Y); y++)
+            {
+                end = new Point(start.X, start.Y + y);
+                if (board.IsValidField(end, Owner, false))
+                {
+                    moves.Add(new Move(start, end, this));
+                    break;
+                }
+                if (board.IsValidField(end, Owner))
+                    moves.Add(new Move(start, end, this));
+                else
+                    break;
+            }
+
+            for (int y = 1; y <= (start.Y); y++)
+            {
+                end = new Point(start.X, start.Y - y);
+                if (board.IsValidField(end, Owner, false))
+                {
+                    moves.Add(new Move(start, end, this));
+                    break;
+                }
+                if (board.IsValidField(end, Owner))
+                    moves.Add(new Move(start, end, this));
+                else
+                    break;
+            }
+
+            return moves;
         }
     }
 }

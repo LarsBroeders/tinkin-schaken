@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Xml.Schema;
 using TINKIN01.Chess.Extensions;
 using TINKIN01.Chess.Pieces;
 
@@ -45,7 +43,10 @@ namespace TINKIN01.Chess
         }
         private ChessboardStateEnum _state;
 
-        public HashSet<Move> madeMoves { get; set; }
+        /// <summary>
+        /// A log of all moves that have been made 
+        /// </summary>
+        public HashSet<Move> MadeMoves { get; set; }
     
         /// <summary>
         /// Gets the index of a piece
@@ -81,8 +82,7 @@ namespace TINKIN01.Chess
         /// <summary>
         /// Gets the pieces at a cirtain position
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
+        /// <param name="point"></param>
         /// <returns></returns>
         public Chesspiece this[Point point]
         {
@@ -97,7 +97,7 @@ namespace TINKIN01.Chess
         /// <returns></returns>
         public Boolean IsUnmoved(Chesspiece chesspiece)
         {
-            return madeMoves.All(move => move.Piece != chesspiece);
+            return MadeMoves.All(move => move.Piece != chesspiece);
         }
 
 
@@ -169,7 +169,7 @@ namespace TINKIN01.Chess
             Player2 = player2;
             Pieces = new Chesspiece[8,8];
             State = ChessboardStateEnum.Paused;
-            madeMoves = new HashSet<Move>();
+            MadeMoves = new HashSet<Move>();
         }
 
         /// <summary>
@@ -216,7 +216,7 @@ namespace TINKIN01.Chess
             if (MoveMadeEvent != null)
                 MoveMadeEvent(this, new MoveEventArgs{EnteredMove =  move});
             
-            madeMoves.Add(move);
+            MadeMoves.Add(move);
             MakeMove();
         }
 

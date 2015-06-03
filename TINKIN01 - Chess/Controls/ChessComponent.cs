@@ -190,14 +190,16 @@ namespace TINKIN01.Controls
             if (SelectedMove.Piece !=  null && SelectedMove.End.Equals(Chess.Move.DefaultCoodtinate) && !SelectedMove.Start.Equals(Chess.Move.DefaultCoodtinate))
             {
                 var moves = SelectedMove.Piece.GetValidMoves(Board);
-                if (SelectedMove.Piece.GetValidMoves(Board).Any(x => x.End.Equals(coordinate)))
+                var moves_correct = moves.Where(x => x.End.Equals(coordinate));
+                if (0 < moves_correct.Count())
                 {
+                    var move = moves_correct.First();
                     //Selected end
                     SelectedMove.End = coordinate;
                     Refresh();
                     //Make move
                     if (MoveEnteredEvent != null)
-                        MoveEnteredEvent(this, new MoveEventArgs {EnteredMove = SelectedMove});
+                        MoveEnteredEvent(this, new MoveEventArgs {EnteredMove = move});
                 }
 
             }

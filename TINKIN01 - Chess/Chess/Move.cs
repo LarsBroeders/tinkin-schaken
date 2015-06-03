@@ -27,11 +27,12 @@ namespace TINKIN01.Chess
             return false;
         }
 
-        public Move(Point start, Point end, Chesspiece piece) : base()
+        public Move(Point start, Point end, Chesspiece piece, Move simultaneous = null) : base()
         {
             Start = start;
             End = end;
             Piece = piece;
+            SimultaneousMove = simultaneous;
         }
 
         /// <summary>
@@ -48,5 +49,7 @@ namespace TINKIN01.Chess
         /// The piece that'll make the move
         /// </summary>
         public Chesspiece Piece { get; set; }
+
+        public Move SimultaneousMove { get; set; }
     }
 }

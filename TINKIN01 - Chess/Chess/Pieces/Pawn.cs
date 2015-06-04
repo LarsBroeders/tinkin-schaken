@@ -19,13 +19,14 @@ namespace TINKIN01.Chess.Pieces
                if (board.IsValidField(end, Owner))
                {
                    moves.Add(new Move(start, end, this));
-               }
-               if (board.IsUnmoved(this))
-               {
-                   end = new Point(start.X, start.Y + 2);
-                   if (board.IsValidField(end, Owner))
+
+                   if (board.IsUnmoved(this))
                    {
-                       moves.Add(new Move(start, end, this));
+                       end = new Point(start.X, start.Y + 2);
+                       if (board.IsValidField(end, Owner))
+                       {
+                           moves.Add(new Move(start, end, this));
+                       }
                    }
                }
                end = new Point(start.X + 1, start.Y + 1);
@@ -44,13 +45,14 @@ namespace TINKIN01.Chess.Pieces
                if (board.IsValidField(end, Owner))
                {
                    moves.Add(new Move(start, end, this));
-               }
-               if (board.IsUnmoved(this))
-               {
-                   end = new Point(start.X, start.Y - 2);
-                   if (board.IsValidField(end, Owner))
+
+                   if (board.IsUnmoved(this))
                    {
-                       moves.Add(new Move(start, end, this));
+                       end = new Point(start.X, start.Y - 2);
+                       if (board.IsValidField(end, Owner))
+                       {
+                           moves.Add(new Move(start, end, this));
+                       }
                    }
                }
                end = new Point(start.X + 1, start.Y - 1);

@@ -10,7 +10,7 @@ namespace TINKIN01.Chess.Extensions
         /// <summary>
         /// Returns a IEnumerable of piecese
         /// </summary>
-        /// <param name="pieces"></param>
+        /// <param name="myPieces"></param>
         /// <returns></returns>
         public static IEnumerable<Chesspiece> ToIEnumerable(this Chesspiece[,] pieces)
         {
@@ -20,7 +20,7 @@ namespace TINKIN01.Chess.Extensions
         /// <summary>
         /// Returns a IEnumerable of piecese
         /// </summary>
-        /// <param name="pieces"></param>
+        /// <param name="myPieces"></param>
         /// <param name="player"></param>
         /// <returns></returns>
         public static IEnumerable<Chesspiece> Mine(this Chesspiece[,] pieces, Player player)

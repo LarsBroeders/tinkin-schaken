@@ -5,10 +5,10 @@ using System.Drawing;
 
 namespace TINKIN01.Chess.Pieces
 {
-    [DebuggerDisplay("Kniight, Owner = {Owner.Team}")]
+    [DebuggerDisplay("Knight, Owner = {Owner.Team}")]
     public class Knight : Chesspiece
     {
-        public override HashSet<Move> GetValidMoves(Chessboard board)
+        public override IEnumerable<Move> GetValidMoves(Chessboard board)
         {
             var start = board.IndexOf(this);
             var moves = new HashSet<Move>();

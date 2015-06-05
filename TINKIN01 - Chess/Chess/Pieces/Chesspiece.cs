@@ -27,6 +27,6 @@ namespace TINKIN01.Chess.Pieces
         /// <summary>
         /// All valid moves this chesspiece can make
         /// </summary>
-        public abstract HashSet<Move> GetValidMoves(Chessboard board);
+        public abstract IEnumerable<Move> GetValidMoves(Chessboard board);
     }
 }

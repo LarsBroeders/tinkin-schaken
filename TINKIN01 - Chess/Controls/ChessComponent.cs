@@ -105,7 +105,7 @@ namespace TINKIN01.Controls
                     //Preparing the highlighted moves
                     var highlightedCoordinates = new List<Point>();
                     if (SelectedMove != null && SelectedMove.Piece != null && SelectedMove.End.Equals(Chess.Move.DefaultCoodtinate))
-                        highlightedCoordinates.AddRange(SelectedMove.Piece.GetValidMoves(Board).Select(move => move.End));
+                        highlightedCoordinates.AddRange(board.GetValidMoves(board.CurrentPlayer).Where(x => x.Piece == SelectedMove.Piece).Select( x=> x.End));
 
                     //Draw the game on boardgraphics, using floats for less conversion
                     for (int x = 0; x < 8f; x += 1)
@@ -189,7 +189,7 @@ namespace TINKIN01.Controls
 
             if (SelectedMove.Piece !=  null && SelectedMove.End.Equals(Chess.Move.DefaultCoodtinate) && !SelectedMove.Start.Equals(Chess.Move.DefaultCoodtinate))
             {
-                var moves = SelectedMove.Piece.GetValidMoves(Board);
+                var moves = board.GetValidMoves(board.CurrentPlayer).Where(x => x.Piece == SelectedMove.Piece);
                 var moves_correct = moves.Where(x => x.End.Equals(coordinate));
                 if (0 < moves_correct.Count())
                 {

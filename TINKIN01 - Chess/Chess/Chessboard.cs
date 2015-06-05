@@ -67,7 +67,7 @@ namespace TINKIN01.Chess
         }
 
         /// <summary>
-        /// Gets the pieces at a cirtain position
+        /// Gets the myPieces at a cirtain position
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
@@ -80,7 +80,7 @@ namespace TINKIN01.Chess
 
 
         /// <summary>
-        /// Gets the pieces at a cirtain position
+        /// Gets the myPieces at a cirtain position
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
@@ -99,7 +99,6 @@ namespace TINKIN01.Chess
         {
             return !MadeMoves.Any(move => move.Piece == chesspiece);
         }
-
 
         public Boolean IsValidField(Point point, Player owner, Boolean nil = true)
         {
@@ -146,21 +145,57 @@ namespace TINKIN01.Chess
         }
 
         /// <summary>
-        /// Gets all valid moves of a cirtain player
+        /// Gets all valid moves of a cirtain player, including check(mate) validation
         /// </summary>
         /// <param name="player"></param>
         /// <returns></returns>
         public IEnumerable<Move> GetValidMoves(Player player)
         {
-            var pieces = Pieces.Mine(player).ToList();
-            var piecesCanMakeMove = pieces.Where(x => x.GetValidMoves(this) != null);
-            var moves = piecesCanMakeMove.SelectMany(x => x.GetValidMoves(this));
-            return moves.Where(x => x != null);
+            //Get all available moves
+            var myPieces = Pieces.Mine(player).Where(x => x != null).ToList();
+            var enemyPieces = Pieces.Cast<Chesspiece>().Except(myPieces).Where(x => x != null);
+
+            var myMoves = myPieces.Select(x => GetValidMoves(x)).Where(x => x != null).SelectMany(x => x);
+            var enemyMoves = enemyPieces.Select(x => GetValidMoves(x)).Where(x => x != null).SelectMany(x => x);
+            var enemyMoveEnds = enemyMoves.Select(x => x.End).OrderBy(x => x.X).ThenBy(x => x.Y);
+
+            var myKing = myPieces.Where(x => x is King).FirstOrDefault();
+            var indexOfMyKing = this.IndexOf(myKing);
+            var enemyThreatMoves = enemyMoves.Where(x => x.End.Equals(indexOfMyKing));
+
+            //Remove moves that are in a 'line of fire' (1. Dodge line of fire)
+            var kingMoves = myMoves.Where(x => x.Piece is King);
+            var kingMovesInLineOfFire = kingMoves.Where(x => enemyMoveEnds.Count(y => y.Equals(x.End)) > 0);
+            var dodgeMoves = kingMoves.Where(x => !kingMovesInLineOfFire.Any(y => x.Equals(y)));
+
+            //We have a trouble; we 
+            if (enemyThreatMoves.Any())
+            {
+                var result = new List<Move>();
+
+                //Getting all coordinates that will block the check(mate)
+                var blockablePoints = enemyThreatMoves.SelectMany(x => x.BetweenStartEnd());
+                var blockableMoves = myMoves.Where(x => !(x.Piece is King)).Where(x => blockablePoints.Any(y => x.End.Equals(y)));
+                var takeoutMoves = myMoves.Where(x => enemyThreatMoves.Any(y => x.End.Equals(y.Start) ));
+
+                result.AddRange(blockableMoves);
+                result.AddRange(dodgeMoves);
+                result.AddRange(takeoutMoves);
+
+                return result;
+                //1. Dodge line of fire
+                //2. Interrupt line of fire
+                //3. Take threat away
+            }
+
+            return myMoves;
+
             //return Pieces.Mine(player).Where(x => x.GetValidMoves(this) != null).SelectMany(x => x.GetValidMoves(this)).Where(x => x != null);
         }
 
+
         /// <summary>
-        /// Gets all valid moves of all pieces
+        /// Gets all valid moves of all myPieces
         /// </summary>
         /// <returns></returns>
         public IEnumerable<Move> GetValidMoves()
@@ -272,8 +307,8 @@ namespace TINKIN01.Chess
 
             for (int i = 0; i < 8; i ++)
             {
-                result.Pieces[i, 1] = new Pawn { Owner = player2 };
-                result.Pieces[i, 6] = new Pawn { Owner = player1 };
+                //result.Pieces[i, 1] = new Pawn { Owner = player2 };
+                //result.Pieces[i, 6] = new Pawn { Owner = player1 };
             }
 
             result.Pieces[0, 0] = new Rook { Owner = player2 };

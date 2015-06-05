@@ -48,7 +48,7 @@ namespace TINKIN01.Chess
         /// </summary>
         ThreefoldRepitition = 22,
         /// <summary>
-        /// Draw; A player doesn't have the pieces to checkmate the other player ( for example, both have only a King)
+        /// Draw; A player doesn't have the myPieces to checkmate the other player ( for example, both have only a King)
         /// </summary>
         InsufficientMaterial = 23
         /*/// <summary>

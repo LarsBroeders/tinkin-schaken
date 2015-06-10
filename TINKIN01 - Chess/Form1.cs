@@ -30,7 +30,7 @@ namespace TINKIN01
         public Form1()
         {
             Player1 = new Human(TeamEnum.White, GetMoveAsync);
-            Player2 = new ChessAI(TeamEnum.Black);
+            Player2 = new Human(TeamEnum.Black, GetMoveAsync);
             InitializeComponent();
 
             var pieces = chessComponent1.Board.Pieces.ToIEnumerable();

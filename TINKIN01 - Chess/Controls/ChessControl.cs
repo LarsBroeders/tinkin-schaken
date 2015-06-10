@@ -12,19 +12,24 @@ using TINKIN01.Chess.Players;
 
 namespace TINKIN01.Controls
 {
-    public partial class ChessComponent : UserControl
+    public partial class ChessControl : UserControl
     {
         /// <summary>
         /// The board 
         /// </summary>
-        public Chessboard Board {
+        public Chessboard Board
+        {
             get { return board; }
             set
             {
                 board = value;
                 if (board.MoveMadeEvent == null)
                     board.MoveMadeEvent += MoveMadeEvent;
-            } }
+                if (board.StateChangedEvent == null)
+                    board.StateChangedEvent += StateChangedEvent;
+
+            }
+        }
 
         private Chessboard board;
 
@@ -53,17 +58,37 @@ namespace TINKIN01.Controls
         /// </summary>
         public EventHandler<MoveEventArgs> MoveEnteredEvent;
 
-        public ChessComponent(Player player1, Player player2)
+        public ChessControl(Player player1, Player player2)
         {
+            InitializeComponent();
             Board = Chessboard.StartPosition(player1, player2);
             Board.MoveMadeEvent += MoveMadeEvent;
-            InitializeComponent();
+            Board.StateChangedEvent += StateChangedEvent;
+            
+        }
+
+        public void StateChangedEvent(object sender, EventArgs e)
+        {
+            if (board.State != ChessboardStateEnum.Playing)
+            {
+                //Controls.)
+                Alert.LabelTitle.Text = board.State.ToString();
+                Alert.LabelDescription.Text = "";
+
+                if (board.State == ChessboardStateEnum.Checkmate)
+                    Alert.LabelDescription.Text = string.Format("{0} lost!", board.CurrentPlayer.Team);
+                
+
+                Alert.Show();
+            }
+            Refresh();
+            
         }
 
         public void MoveMadeEvent(object sender, MoveEventArgs e)
         {
-            this.SelectedMove = e.EnteredMove;
-            this.Refresh();
+            SelectedMove = e.EnteredMove;
+            Refresh();
         }
 
         /// <summary>
@@ -77,6 +102,10 @@ namespace TINKIN01.Controls
             BoardLocation = new Point((Width - size) / 2, (Height - size) / 2);
             BoardSize = new Size(size, size);
             TileSize = new SizeF(size / 8f, size/8f);
+
+            Alert.Location = new Point(BoardLocation.X + (int)(BoardSize.Width * 0.1f), BoardLocation.Y + (int)(BoardSize.Height * 0.3f));
+            Alert.Size = new Size((int)(BoardSize.Width * 0.8f), (int)(BoardSize.Height * 0.4f));
+            Alert.Refresh();
 
             //Calling the base
             base.OnSizeChanged(e);
@@ -202,7 +231,8 @@ namespace TINKIN01.Controls
                         MoveEnteredEvent(this, new MoveEventArgs {EnteredMove = move});
                 }
 
-            }
+            } 
+            Alert.Refresh();
         }
     }
 

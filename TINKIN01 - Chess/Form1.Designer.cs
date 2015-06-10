@@ -30,7 +30,7 @@ namespace TINKIN01
         /// </summary>
         private void InitializeComponent()
         {
-            this.chessComponent1 = new TINKIN01.Controls.ChessComponent(Player1, Player2);
+            this.chessComponent1 = new TINKIN01.Controls.ChessControl(Player1, Player2);
             this.SuspendLayout();
             // 
             // chessComponent1
@@ -56,7 +56,7 @@ namespace TINKIN01
 
         #endregion
 
-        private Controls.ChessComponent chessComponent1;
+        private Controls.ChessControl chessComponent1;
     }
 }
 

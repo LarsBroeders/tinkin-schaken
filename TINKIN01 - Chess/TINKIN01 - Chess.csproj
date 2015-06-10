@@ -47,6 +47,7 @@
     <Compile Include="Chess\Chessboard.cs" />
     <Compile Include="Chess\ChessboardStateEnum.cs" />
     <Compile Include="Chess\Extensions\ChesspiecesExtension.cs" />
+    <Compile Include="Chess\Extensions\PointExtension.cs" />
     <Compile Include="Chess\MoveEventArgs.cs" />
     <Compile Include="Chess\Pieces\Bishop.cs" />
     <Compile Include="Chess\Pieces\King.cs" />
@@ -54,11 +55,17 @@
     <Compile Include="Chess\Players\ChessAI.cs" />
     <Compile Include="Chess\Players\Human.cs" />
     <Compile Include="Chess\TeamEnum.cs" />
-    <Compile Include="Controls\ChessComponent.cs">
+    <Compile Include="Controls\ChessControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\ChessComponent.Designer.cs">
-      <DependentUpon>ChessComponent.cs</DependentUpon>
+    <Compile Include="Controls\ChessControl.Designer.cs">
+      <DependentUpon>ChessControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ChessControlAlert.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ChessControlAlert.Designer.cs">
+      <DependentUpon>ChessControlAlert.cs</DependentUpon>
     </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -74,8 +81,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Chess\Player.cs" />
     <Compile Include="Chess\Pieces\Rook.cs" />
-    <EmbeddedResource Include="Controls\ChessComponent.resx">
-      <DependentUpon>ChessComponent.cs</DependentUpon>
+    <EmbeddedResource Include="Controls\ChessControl.resx">
+      <DependentUpon>ChessControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ChessControlAlert.resx">
+      <DependentUpon>ChessControlAlert.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

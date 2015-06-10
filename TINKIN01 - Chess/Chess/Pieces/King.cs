@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
+using System.Security.Policy;
+using TINKIN01.Chess.Extensions;
 
 namespace TINKIN01.Chess.Pieces
 {
@@ -11,87 +14,33 @@ namespace TINKIN01.Chess.Pieces
         public override IEnumerable<Move> GetValidMoves(Chessboard board)
         {
             var start = board.IndexOf(this);
-            var moves = new HashSet<Move>();
-            Point end;
+            var ends = new [] { new Point(start.X, start.Y + 1),
+                new Point(start.X, start.Y - 1),
+                new Point(start.X - 1, start.Y),
+                new Point(start.X + 1, start.Y),
+                new Point(start.X + 1, start.Y + 1),
+                new Point(start.X + 1, start.Y - 1),
+                new Point(start.X - 1, start.Y + 1),
+                new Point(start.X - 1, start.Y - 1)
+            };
 
-            end = new Point(start.X, start.Y + 1);
-            if (board.IsValidField(end, Owner) || board.IsValidField(end, Owner, false))
-                moves.Add(new Move(start, end, this));
+            foreach (var end in ends)
+                if (board.IsValidDesitnationFor(end, Owner))
+                    yield return new Move(start, end, this);
 
-            end = new Point(start.X, start.Y - 1);
-            if (board.IsValidField(end, Owner) || board.IsValidField(end, Owner, false))
-                moves.Add(new Move(start, end, this));
-
-            end = new Point(start.X - 1, start.Y);
-            if (board.IsValidField(end, Owner) || board.IsValidField(end, Owner, false))
-                moves.Add(new Move(start, end, this));
-
-            end = new Point(start.X + 1, start.Y);
-            if (board.IsValidField(end, Owner) || board.IsValidField(end, Owner, false))
-                moves.Add(new Move(start, end, this));
-
-            end = new Point(start.X + 1, start.Y + 1);
-            if (board.IsValidField(end, Owner) || board.IsValidField(end, Owner, false))
-                moves.Add(new Move(start, end, this));
-
-            end = new Point(start.X + 1, start.Y - 1);
-            if (board.IsValidField(end, Owner) || board.IsValidField(end, Owner, false))
-                moves.Add(new Move(start, end, this));
-
-            end = new Point(start.X - 1, start.Y + 1);
-            if (board.IsValidField(end, Owner) || board.IsValidField(end, Owner, false))
-                moves.Add(new Move(start, end, this));
-
-            end = new Point(start.X - 1, start.Y - 1);
-            if (board.IsValidField(end, Owner) || board.IsValidField(end, Owner, false))
-                moves.Add(new Move(start, end, this));
-
-            if (Owner.Team == TeamEnum.Black)
+            //The swap!
+            if (board.IsUnmoved(this))
             {
-                if (board.IsUnmoved(this))
+                var unmovedRooks = board.Pieces.Mine(Owner).Where(x => x is Rook).Where(board.IsUnmoved);
+    
+                foreach (var rook in unmovedRooks)
                 {
-                    if (board.IsUnmoved(board[0, 0]) &&
-                        board.IsValidField(new Point(1, 0), Owner) &&
-                        board.IsValidField(new Point(2, 0), Owner) &&
-                        board.IsValidField(new Point(3, 0), Owner)
-                        )
-                    {
-                        moves.Add(new Move(start, new Point(1, 0), this, new Move(new Point(0, 0), new Point(2, 0), board[0, 0])));
-                    }
-
-                    if (board.IsUnmoved(board[7, 0]) &&
-                        board.IsValidField(new Point(5, 0), Owner) &&
-                        board.IsValidField(new Point(6, 0), Owner)
-                        )
-                    {
-                        moves.Add(new Move(start, new Point(6, 0), this, new Move(new Point(7, 0), new Point(5, 0), board[7, 0])));
-                    }
+                    var rookPosition = board.IndexOf(rook);
+                    var between = start.Between(rookPosition).ToList();
+                    if (between.Any() && between.All(point => board[point] == null))
+                        yield return new Move(start, between[1], this, new Move(rookPosition, between[0], rook));
                 }
             }
-            else
-            {
-                if (board.IsUnmoved(this))
-                {
-                    if (board.IsUnmoved(board[0, 7]) &&
-                        board.IsValidField(new Point(1, 7), Owner) &&
-                        board.IsValidField(new Point(2, 7), Owner)
-                        )
-                    {
-                        moves.Add(new Move(start, new Point(1, 7), this, new Move(new Point(0, 7), new Point(2, 7), board[0, 7])));
-                    }
-
-                    if (board.IsUnmoved(board[7, 7]) &&
-                        board.IsValidField(new Point(4, 7), Owner) &&
-                        board.IsValidField(new Point(5, 7), Owner) &&
-                        board.IsValidField(new Point(6, 7), Owner)
-                        )
-                    {
-                        moves.Add(new Move(start, new Point(6, 7), this, new Move(new Point(7, 7), new Point(5, 7), board[7, 7])));
-                    }
-                }
-            }
-
-            return moves;
         }
     }
 }

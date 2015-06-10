@@ -37,8 +37,12 @@ namespace TINKIN01.Chess
             get { return _state; }
             set
             {
-                //todo: RaiseStateChangedEvent?
-                _state = value;   
+                if (_state != value)
+                {
+                    _state = value;
+                    if (StateChangedEvent != null)
+                        StateChangedEvent(this, EventArgs.Empty);
+                }
             }
         }
         private ChessboardStateEnum _state;
@@ -47,7 +51,8 @@ namespace TINKIN01.Chess
         /// A log of all moves that have been made 
         /// </summary>
         public HashSet<Move> MadeMoves { get; set; }
-    
+
+
         /// <summary>
         /// Gets the index of a piece
         /// </summary>
@@ -100,24 +105,18 @@ namespace TINKIN01.Chess
             return !MadeMoves.Any(move => move.Piece == chesspiece);
         }
 
-        public Boolean IsValidField(Point point, Player owner, Boolean nil = true)
+        public Boolean IsValidDesitnationFor(Point point, Player owner)
         {
             if (point.X > 7 || point.Y > 7 || point.X < 0 || point.Y < 0)
                 return false;
 
-            var IsNull = (Pieces[point.X, point.Y] == null || Pieces[point.X, point.Y].Owner == null);
+            if (Pieces[point.X, point.Y] == null)
+                return true;
 
-            if (nil)
-            {
-                return IsNull;
-            }
-            else
-            {
-                if (IsNull)
-                    return false;
-                else
-                    return Pieces[point.X, point.Y].Owner != owner;
-            }
+            if (Pieces[point.X, point.Y] != null && Pieces[point.X, point.Y].Owner != owner)
+                return true;
+
+            return false;
         }
 
         /// <summary>
@@ -155,18 +154,18 @@ namespace TINKIN01.Chess
             var myPieces = Pieces.Mine(player).Where(x => x != null).ToList();
             var enemyPieces = Pieces.Cast<Chesspiece>().Except(myPieces).Where(x => x != null);
 
-            var myMoves = myPieces.Select(x => GetValidMoves(x)).Where(x => x != null).SelectMany(x => x);
-            var enemyMoves = enemyPieces.Select(x => GetValidMoves(x)).Where(x => x != null).SelectMany(x => x);
+            var myMoves = myPieces.SelectMany(GetValidMoves).ToList();
+            var enemyMoves = enemyPieces.SelectMany(GetValidMoves).ToList();
             var enemyMoveEnds = enemyMoves.Select(x => x.End).OrderBy(x => x.X).ThenBy(x => x.Y);
 
-            var myKing = myPieces.Where(x => x is King).FirstOrDefault();
-            var indexOfMyKing = this.IndexOf(myKing);
-            var enemyThreatMoves = enemyMoves.Where(x => x.End.Equals(indexOfMyKing));
+            var myKing = myPieces.FirstOrDefault(x => x is King);
+            var indexOfMyKing = IndexOf(myKing);
+            var enemyThreatMoves = enemyMoves.Where(x => x.End.Equals(indexOfMyKing)).ToList();
 
             //Remove moves that are in a 'line of fire' (1. Dodge line of fire)
-            var kingMoves = myMoves.Where(x => x.Piece is King);
-            var kingMovesInLineOfFire = kingMoves.Where(x => enemyMoveEnds.Count(y => y.Equals(x.End)) > 0);
-            var dodgeMoves = kingMoves.Where(x => !kingMovesInLineOfFire.Any(y => x.Equals(y)));
+            var kingMoves = myMoves.Where(x => x.Piece is King).ToList();
+            var kingMovesInLineOfFire = kingMoves.Where(move => enemyMoveEnds.Count(y => move.End.Equals(y)) > 0);
+            var dodgeMoves = kingMoves.Where(x => !kingMovesInLineOfFire.Any(x.Equals));
 
             //We have a trouble; we 
             if (enemyThreatMoves.Any())
@@ -241,44 +240,36 @@ namespace TINKIN01.Chess
             if (State != ChessboardStateEnum.Playing)
                 return;
 
-            //Getting a move
-            CurrentPlayer.RequestMove(this);
+            if (State == ChessboardStateEnum.Playing)
+            {
+                //Getting a move
+                CurrentPlayer.RequestMove(this);
+            }
         }
 
         /// <summary>
         /// Executing a move
         /// </summary>
         /// <param name="move"></param>
-        public void ExecuteMove(Move move)
+        public void ExecuteMove(Move move, bool RaiseEvent = true)
         {
             //Executing the move
+            UpdateGamestate();
             
             Console.WriteLine("Move Made: {0} {1} to {2};{3}", move.Piece.GetType().Name, move.Piece.Owner.Team, move.End.X, move.End.Y);
             CurrentPlayer = CurrentPlayer == Player1 ? Player2 : Player1;
             this[move.End] = this[move.Start];
             this[move.Start] = null;
 
-            if (MoveMadeEvent != null)
+            if (RaiseEvent && MoveMadeEvent != null)
                 MoveMadeEvent(this, new MoveEventArgs{EnteredMove =  move});
             
             MadeMoves.Add(move);
 
             if (move.SimultaneousMove != null)
-                ExecuteMoveSilent(move.SimultaneousMove);
+                ExecuteMove(move.SimultaneousMove, false);
 
             MakeMove();
-        }
-
-        public void ExecuteMoveSilent(Move move)
-        {
-            Console.WriteLine("Move Made: {0} {1} to {2};{3}", move.Piece.GetType().Name, move.Piece.Owner.Team, move.End.X, move.End.Y);
-            this[move.End] = this[move.Start];
-            this[move.Start] = null;
-
-            if (MoveMadeEvent != null)
-                MoveMadeEvent(this, new MoveEventArgs { EnteredMove = move });
-
-            MadeMoves.Add(move);
         }
 
         /// <summary>
@@ -286,6 +277,11 @@ namespace TINKIN01.Chess
         /// </summary>
         private void UpdateGamestate()
         {
+            var moves = GetValidMoves(CurrentPlayer);
+
+            if (!moves.Any())
+                State = ChessboardStateEnum.Checkmate;
+
             //TODO: Pattern recognition to update gamestate
         }
 
@@ -293,6 +289,11 @@ namespace TINKIN01.Chess
         /// Raises the move made event
         /// </summary>
         public EventHandler<MoveEventArgs> MoveMadeEvent;
+
+        /// <summary>
+        /// Raises the state changed event
+        /// </summary>
+        public EventHandler StateChangedEvent;
 
         /// <summary>
         /// Returns a new chessboard with default position
@@ -307,8 +308,8 @@ namespace TINKIN01.Chess
 
             for (int i = 0; i < 8; i ++)
             {
-                //result.Pieces[i, 1] = new Pawn { Owner = player2 };
-                //result.Pieces[i, 6] = new Pawn { Owner = player1 };
+                result.Pieces[i, 1] = new Pawn { Owner = player2 };
+                result.Pieces[i, 6] = new Pawn { Owner = player1 };
             }
 
             result.Pieces[0, 0] = new Rook { Owner = player2 };

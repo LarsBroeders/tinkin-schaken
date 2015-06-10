@@ -11,66 +11,36 @@ namespace TINKIN01.Chess.Pieces
         public override IEnumerable<Move> GetValidMoves(Chessboard board)
         {
             var start = board.IndexOf(this);
-            var moves = new HashSet<Move>();
-            Point end;
 
-            for (int xy = 1; xy < 8; xy++)
+            for (Point end = new Point(start.X + 1, start.Y + 1);
+                board.IsValidDesitnationFor(end, Owner);
+                end = new Point(end.X + 1, end.Y + 1))
             {
-                end = new Point(start.X + xy, start.Y + xy);
-                if (board.IsValidField(end, Owner, false))
-                {
-                    moves.Add(new Move(start, end, this));
-                    break;
-                }
-                if (board.IsValidField(end, Owner))
-                    moves.Add(new Move(start, end, this));
-                else
+                yield return new Move(start, end, this);
+                if (board[end] != null)
                     break;
             }
 
-            for (int xy = 1; xy < 8; xy++)
+            for (Point end = new Point(start.X + 1, start.Y - 1); board.IsValidDesitnationFor(end, Owner); end = new Point(end.X + 1, end.Y - 1))
             {
-                end = new Point(start.X + xy, start.Y - xy);
-                if (board.IsValidField(end, Owner, false))
-                {
-                    moves.Add(new Move(start, end, this));
-                    break;
-                }
-                if (board.IsValidField(end, Owner))
-                    moves.Add(new Move(start, end, this));
-                else
+                yield return new Move(start, end, this);
+                if (board[end] != null)
                     break;
             }
 
-            for (int xy = 1; xy < 8; xy++)
+            for (Point end = new Point(start.X - 1, start.Y + 1); board.IsValidDesitnationFor(end, Owner); end = new Point(end.X - 1, end.Y + 1))
             {
-                end = new Point(start.X - xy, start.Y + xy);
-                if (board.IsValidField(end, Owner, false))
-                {
-                    moves.Add(new Move(start, end, this));
-                    break;
-                }
-                if (board.IsValidField(end, Owner))
-                    moves.Add(new Move(start, end, this));
-                else
+                yield return new Move(start, end, this);
+                if (board[end] != null)
                     break;
             }
 
-            for (int xy = 1; xy < 8; xy++)
+            for (Point end = new Point(start.X - 1, start.Y - 1); board.IsValidDesitnationFor(end, Owner); end = new Point(end.X - 1, end.Y - 1))
             {
-                end = new Point(start.X - xy, start.Y - xy);
-                if (board.IsValidField(end, Owner, false))
-                {
-                    moves.Add(new Move(start, end, this));
-                    break;
-                }
-                if (board.IsValidField(end, Owner))
-                    moves.Add(new Move(start, end, this));
-                else
+                yield return new Move(start, end, this);
+                if (board[end] != null)
                     break;
             }
-
-            return moves;
         }
     }
 }

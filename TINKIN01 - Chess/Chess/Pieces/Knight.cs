@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 
 namespace TINKIN01.Chess.Pieces
 {
@@ -11,42 +12,23 @@ namespace TINKIN01.Chess.Pieces
         public override IEnumerable<Move> GetValidMoves(Chessboard board)
         {
             var start = board.IndexOf(this);
-            var moves = new HashSet<Move>();
-            Point end;
+            var ends = new[]
+            {
+                new Point(start.X + 1, start.Y + 2),
+                new Point(start.X + 1, start.Y - 2),
+                new Point(start.X - 1, start.Y + 2),
+                new Point(start.X - 1, start.Y - 2),
+                new Point(start.X + 2, start.Y + 1),
+                new Point(start.X + 2, start.Y - 1),
+                new Point(start.X - 2, start.Y + 1),
+                new Point(start.X - 2, start.Y - 1)
+            };
 
-            end = new Point(start.X + 1, start.Y + 2);
-            if (board.IsValidField(end, Owner) || board.IsValidField(end, Owner, false))
-                moves.Add(new Move(start, end, this));
-
-            end = new Point(start.X + 1, start.Y - 2);
-            if (board.IsValidField(end, Owner) || board.IsValidField(end, Owner, false))
-                moves.Add(new Move(start, end, this));
-
-            end = new Point(start.X - 1, start.Y + 2);
-            if (board.IsValidField(end, Owner) || board.IsValidField(end, Owner, false))
-                moves.Add(new Move(start, end, this));
-
-            end = new Point(start.X - 1, start.Y - 2);
-            if (board.IsValidField(end, Owner) || board.IsValidField(end, Owner, false))
-                moves.Add(new Move(start, end, this));
-
-            end = new Point(start.X + 2, start.Y + 1);
-            if (board.IsValidField(end, Owner) || board.IsValidField(end, Owner, false))
-                moves.Add(new Move(start, end, this));
-
-            end = new Point(start.X + 2, start.Y - 1);
-            if (board.IsValidField(end, Owner) || board.IsValidField(end, Owner, false))
-                moves.Add(new Move(start, end, this));
-
-            end = new Point(start.X - 2, start.Y + 1);
-            if (board.IsValidField(end, Owner) || board.IsValidField(end, Owner, false))
-                moves.Add(new Move(start, end, this));
-
-            end = new Point(start.X - 2, start.Y - 1);
-            if (board.IsValidField(end, Owner) || board.IsValidField(end, Owner, false))
-                moves.Add(new Move(start, end, this));
-
-            return moves;
+            foreach (var end in ends)
+            {
+                if (board.IsValidDesitnationFor(end, Owner))
+                    yield return new Move(start, end, this);
+            }
         }
     }
 }

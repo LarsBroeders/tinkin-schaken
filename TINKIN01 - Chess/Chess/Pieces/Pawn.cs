@@ -11,62 +11,30 @@ namespace TINKIN01.Chess.Pieces
        public override IEnumerable<Move> GetValidMoves(Chessboard board)
        {
            var start = board.IndexOf(this);
-           var moves = new HashSet<Move>();
-           Point end;
-           if (Owner.Team == TeamEnum.Black)
-           {
-               end = new Point(start.X, start.Y + 1);
-               if (board.IsValidField(end, Owner))
-               {
-                   moves.Add(new Move(start, end, this));
 
-                   if (board.IsUnmoved(this))
-                   {
-                       end = new Point(start.X, start.Y + 2);
-                       if (board.IsValidField(end, Owner))
-                       {
-                           moves.Add(new Move(start, end, this));
-                       }
-                   }
-               }
-               end = new Point(start.X + 1, start.Y + 1);
-               if (board.IsValidField(end, Owner, false))
-               {
-                   moves.Add(new Move(start, end, this));
-               }
-               end = new Point(start.X - 1 , start.Y + 1);
-               if (board.IsValidField(end, Owner, false))
-               {
-                   moves.Add(new Move(start, end, this));
-               }
-           } else
-           {
-               end = new Point(start.X, start.Y - 1);
-               if (board.IsValidField(end, Owner))
-               {
-                   moves.Add(new Move(start, end, this));
+           //Indicating direction
+           var directionY = Owner.Team == TeamEnum.White ? -1 : 1;
+           var end = new Point(start.X, start.Y + directionY);
 
-                   if (board.IsUnmoved(this))
-                   {
-                       end = new Point(start.X, start.Y - 2);
-                       if (board.IsValidField(end, Owner))
-                       {
-                           moves.Add(new Move(start, end, this));
-                       }
-                   }
-               }
-               end = new Point(start.X + 1, start.Y - 1);
-               if (board.IsValidField(end, Owner, false))
-               {
-                   moves.Add(new Move(start, end, this));
-               }
-               end = new Point(start.X - 1, start.Y - 1);
-               if (board.IsValidField(end, Owner, false))
-               {
-                   moves.Add(new Move(start, end, this));
-               }
+           if (board.IsValidDesitnationFor(end, Owner) && board[end] == null)
+           {
+               yield return new Move(start, end, this);
+               end = new Point(start.X, start.Y + directionY * 2);
+
+               //Double jump
+               if (board.IsUnmoved(this) && board.IsValidDesitnationFor(end, Owner) && board[end] == null)
+                   yield return new Move(start, end, this);
+
            }
-           return moves;
+
+           //Taking
+           end = new Point(start.X + 1, start.Y + directionY);
+           if (board.IsValidDesitnationFor(end, Owner) && board[end] != null && board[end].Owner != Owner)
+               yield return new Move(start, end, this);
+
+           end = new Point(start.X - 1, start.Y + directionY);
+           if (board.IsValidDesitnationFor(end, Owner) && board[end] != null && board[end].Owner != Owner)
+               yield return new Move(start, end, this);
        }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace TINKIN01.Controls
 {
-    partial class ChessComponent
+    partial class ChessControl
     {
         /// <summary> 
         /// Required designer variable.
@@ -28,10 +28,31 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
+            this.Alert = new TINKIN01.Controls.ChessControlAlert();
+            this.SuspendLayout();
+            // 
+            // Alert
+            // 
+            this.Alert.BackColor = System.Drawing.Color.Red;
+            this.Alert.Location = new System.Drawing.Point(56, 87);
+            this.Alert.Name = "Alert";
+            this.Alert.Size = new System.Drawing.Size(292, 128);
+            this.Alert.TabIndex = 0;
+            this.Alert.Visible = false;
+            // 
+            // ChessControl
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.Alert);
+            this.Name = "ChessControl";
+            this.Size = new System.Drawing.Size(415, 303);
+            this.ResumeLayout(false);
+
         }
 
         #endregion
+
+        private ChessControlAlert Alert;
     }
 }

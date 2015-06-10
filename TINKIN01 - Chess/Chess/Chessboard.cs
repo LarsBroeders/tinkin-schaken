@@ -323,8 +323,8 @@ namespace TINKIN01.Chess
             result.Pieces[0, 7] = new Rook { Owner = player1 };
             result.Pieces[1, 7] = new Knight { Owner = player1 };
             result.Pieces[2, 7] = new Bishop { Owner = player1 };
-            result.Pieces[3, 7] = new King { Owner = player1 };
-            result.Pieces[4, 7] = new Queen { Owner = player1 };
+            result.Pieces[4, 7] = new King { Owner = player1 };
+            result.Pieces[3, 7] = new Queen { Owner = player1 };
             result.Pieces[5, 7] = new Bishop { Owner = player1 };
             result.Pieces[6, 7] = new Knight { Owner = player1 };
             result.Pieces[7, 7] = new Rook { Owner = player1 };

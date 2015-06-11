@@ -139,7 +139,6 @@ namespace TINKIN01.Chess
         /// Gets all valid moves of a cirtain player, including check(mate) validation
         /// </summary>
         /// <param name="player"></param>
-        /// <param name="checkForMate"></param>
         /// <returns></returns>
         public IEnumerable<Move> GetValidMoves(Player player)
         {
@@ -148,9 +147,9 @@ namespace TINKIN01.Chess
             var myMoves = myPieces.SelectMany(x => x.GetValidMoves(this)).ToList();
             foreach (var move in myMoves)
             {
-                //Making a replica
                 using (var board = new Chessboard(Player1, Player2))
                 {
+                    //Making a replica
                     foreach (var piece in Pieces.Cast<Chesspiece>())
                         board[IndexOf(piece)] = piece;
                     foreach (var madeMoves in MadeMoves)
@@ -158,17 +157,20 @@ namespace TINKIN01.Chess
                     board.CurrentPlayer = CurrentPlayer;
                     board.ExecuteMove(move, false);
 
+                    //Calculating if the enemyPieces can take the king
                     var myPiecesLeft = board.Pieces.Mine(player).Where(x => x != null).ToList();
                     var enemyPiecesLeft = board.Pieces.Cast<Chesspiece>().Except(myPiecesLeft).Where(x => x != null).ToList();
                     var enemyPiecesLeftMoveEnds = enemyPiecesLeft.SelectMany(x => x.GetValidMoves(board));
                     var enemyKing = myPiecesLeft.FirstOrDefault(x => x is King);
 
+                    //If there isn't a king, perfect for us!
                     if (enemyKing == null)
                     {
                         yield return move;
                         continue;
                     }
 
+                    //If there is a king, calculating its index and seeing if no-one can take him
                     var indexOfMyNewKing = board.IndexOf(enemyKing);
                     if (enemyPiecesLeftMoveEnds.All(x => !x.End.Equals(indexOfMyNewKing)))
                     {

@@ -54,6 +54,11 @@ namespace TINKIN01.Controls
         public Move SelectedMove { get; set; }
 
         /// <summary>
+        /// The avaible moves
+        /// </summary>
+        private IEnumerable<Move> AvailableMoves { get; set; } 
+
+        /// <summary>
         /// MoveEntered event
         /// </summary>
         public EventHandler<MoveEventArgs> MoveEnteredEvent;
@@ -64,7 +69,7 @@ namespace TINKIN01.Controls
             Board = Chessboard.StartPosition(player1, player2);
             Board.MoveMadeEvent += MoveMadeEvent;
             Board.StateChangedEvent += StateChangedEvent;
-            
+            AvailableMoves = new Move[] {};
         }
 
         public void StateChangedEvent(object sender, EventArgs e)
@@ -81,6 +86,8 @@ namespace TINKIN01.Controls
 
                 Alert.Show();
             }
+
+            AvailableMoves = board.GetValidMoves(board.CurrentPlayer);
             Refresh();
             
         }
@@ -88,6 +95,7 @@ namespace TINKIN01.Controls
         public void MoveMadeEvent(object sender, MoveEventArgs e)
         {
             SelectedMove = e.EnteredMove;
+            AvailableMoves = board.GetValidMoves(board.CurrentPlayer);
             Refresh();
         }
 
@@ -134,7 +142,7 @@ namespace TINKIN01.Controls
                     //Preparing the highlighted moves
                     var highlightedCoordinates = new List<Point>();
                     if (SelectedMove != null && SelectedMove.Piece != null && SelectedMove.End.Equals(Chess.Move.DefaultCoodtinate))
-                        highlightedCoordinates.AddRange(board.GetValidMoves(board.CurrentPlayer).Where(x => x.Piece == SelectedMove.Piece).Select( x=> x.End));
+                        highlightedCoordinates.AddRange(AvailableMoves.Where(x => x.Piece == SelectedMove.Piece).Select( x=> x.End));
 
                     //Draw the game on boardgraphics, using floats for less conversion
                     for (int x = 0; x < 8f; x += 1)
@@ -197,7 +205,7 @@ namespace TINKIN01.Controls
             var local = new PointF(e.X - BoardLocation.X, e.Y - BoardLocation.Y);
             var coordinate = new Point((int)Math.Floor(local.X / TileSize.Width), (int)Math.Floor(local.Y / TileSize.Height));
 
-            if (coordinate.X < 0 || coordinate.Y < 0 || coordinate.X > 8 || coordinate.Y > 8)
+            if (coordinate.X < 0 || coordinate.Y < 0 || coordinate.X > 7 || coordinate.Y > 7)
                 return;
 
             //Coordinate is valid

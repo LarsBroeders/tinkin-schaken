@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using TINKIN01.Chess.Extensions;
 using TINKIN01.Chess.Pieces;
+using TINKIN01.Controls;
 
 namespace TINKIN01.Chess
 {
-    public class Chessboard
+    public class Chessboard : IDisposable
     {
         /// <summary>
         /// An 8x8 array with Chesspieces
@@ -102,7 +104,7 @@ namespace TINKIN01.Chess
         /// <returns></returns>
         public Boolean IsUnmoved(Chesspiece chesspiece)
         {
-            return !MadeMoves.Any(move => move.Piece == chesspiece);
+            return MadeMoves.All(move => move.Piece != chesspiece);
         }
 
         public Boolean IsValidDesitnationFor(Point point, Player owner)
@@ -132,64 +134,48 @@ namespace TINKIN01.Chess
             return false;
         }
 
-        
-        /// <summary>
-        /// Gets all valid moves of a cirtain chesspiece
-        /// </summary>
-        /// <param name="chesspiece"></param>
-        /// <returns></returns>
-        public IEnumerable<Move> GetValidMoves(Chesspiece chesspiece)
-        {
-            return chesspiece.GetValidMoves(this);
-        }
 
         /// <summary>
         /// Gets all valid moves of a cirtain player, including check(mate) validation
         /// </summary>
         /// <param name="player"></param>
+        /// <param name="checkForMate"></param>
         /// <returns></returns>
         public IEnumerable<Move> GetValidMoves(Player player)
         {
             //Get all available moves
             var myPieces = Pieces.Mine(player).Where(x => x != null).ToList();
-            var enemyPieces = Pieces.Cast<Chesspiece>().Except(myPieces).Where(x => x != null);
-
-            var myMoves = myPieces.SelectMany(GetValidMoves).ToList();
-            var enemyMoves = enemyPieces.SelectMany(GetValidMoves).ToList();
-            var enemyMoveEnds = enemyMoves.Select(x => x.End).OrderBy(x => x.X).ThenBy(x => x.Y);
-
-            var myKing = myPieces.FirstOrDefault(x => x is King);
-            var indexOfMyKing = IndexOf(myKing);
-            var enemyThreatMoves = enemyMoves.Where(x => x.End.Equals(indexOfMyKing)).ToList();
-
-            //Remove moves that are in a 'line of fire' (1. Dodge line of fire)
-            var kingMoves = myMoves.Where(x => x.Piece is King).ToList();
-            var kingMovesInLineOfFire = kingMoves.Where(move => enemyMoveEnds.Count(y => move.End.Equals(y)) > 0);
-            var dodgeMoves = kingMoves.Where(x => !kingMovesInLineOfFire.Any(x.Equals));
-
-            //We have a trouble; we 
-            if (enemyThreatMoves.Any())
+            var myMoves = myPieces.SelectMany(x => x.GetValidMoves(this)).ToList();
+            foreach (var move in myMoves)
             {
-                var result = new List<Move>();
+                //Making a replica
+                using (var board = new Chessboard(Player1, Player2))
+                {
+                    foreach (var piece in Pieces.Cast<Chesspiece>())
+                        board[IndexOf(piece)] = piece;
+                    foreach (var madeMoves in MadeMoves)
+                        board.MadeMoves.Add(madeMoves);
+                    board.CurrentPlayer = CurrentPlayer;
+                    board.ExecuteMove(move, false);
 
-                //Getting all coordinates that will block the check(mate)
-                var blockablePoints = enemyThreatMoves.SelectMany(x => x.BetweenStartEnd());
-                var blockableMoves = myMoves.Where(x => !(x.Piece is King)).Where(x => blockablePoints.Any(y => x.End.Equals(y)));
-                var takeoutMoves = myMoves.Where(x => enemyThreatMoves.Any(y => x.End.Equals(y.Start) ));
+                    var myPiecesLeft = board.Pieces.Mine(player).Where(x => x != null).ToList();
+                    var enemyPiecesLeft = board.Pieces.Cast<Chesspiece>().Except(myPiecesLeft).Where(x => x != null).ToList();
+                    var enemyPiecesLeftMoveEnds = enemyPiecesLeft.SelectMany(x => x.GetValidMoves(board));
+                    var enemyKing = myPiecesLeft.FirstOrDefault(x => x is King);
 
-                result.AddRange(blockableMoves);
-                result.AddRange(dodgeMoves);
-                result.AddRange(takeoutMoves);
+                    if (enemyKing == null)
+                    {
+                        yield return move;
+                        continue;
+                    }
 
-                return result;
-                //1. Dodge line of fire
-                //2. Interrupt line of fire
-                //3. Take threat away
-            }
-
-            return myMoves;
-
-            //return Pieces.Mine(player).Where(x => x.GetValidMoves(this) != null).SelectMany(x => x.GetValidMoves(this)).Where(x => x != null);
+                    var indexOfMyNewKing = board.IndexOf(enemyKing);
+                    if (enemyPiecesLeftMoveEnds.All(x => !x.End.Equals(indexOfMyNewKing)))
+                    {
+                        yield return move;
+                    }
+                }
+            }        
         }
 
 
@@ -213,6 +199,17 @@ namespace TINKIN01.Chess
             Pieces = new Chesspiece[8,8];
             State = ChessboardStateEnum.Paused;
             MadeMoves = new HashSet<Move>();
+        }
+
+        ~Chessboard()
+        {
+            Dispose();
+        }
+
+        public void Dispose()
+        {
+            Pieces = new Chesspiece[0, 0];
+            MadeMoves.Clear();
         }
 
         /// <summary>
@@ -251,25 +248,29 @@ namespace TINKIN01.Chess
         /// Executing a move
         /// </summary>
         /// <param name="move"></param>
+        /// <param name="RaiseEvent"></param>
         public void ExecuteMove(Move move, bool RaiseEvent = true)
         {
-            //Executing the move
-            UpdateGamestate();
-            
-            Console.WriteLine("Move Made: {0} {1} to {2};{3}", move.Piece.GetType().Name, move.Piece.Owner.Team, move.End.X, move.End.Y);
-            CurrentPlayer = CurrentPlayer == Player1 ? Player2 : Player1;
+            Console.WriteLine("Move Made: {0} {1} to {2};{3}", move.Piece.GetType().Name, move.Piece.Owner.Team,
+                move.End.X, move.End.Y);
             this[move.End] = this[move.Start];
             this[move.Start] = null;
-
-            if (RaiseEvent && MoveMadeEvent != null)
-                MoveMadeEvent(this, new MoveEventArgs{EnteredMove =  move});
-            
             MadeMoves.Add(move);
 
             if (move.SimultaneousMove != null)
                 ExecuteMove(move.SimultaneousMove, false);
+            else
+            {
+                CurrentPlayer = CurrentPlayer == Player1 ? Player2 : Player1;
 
-            MakeMove();
+                if (RaiseEvent)
+                {
+                    if (MoveMadeEvent != null)
+                        MoveMadeEvent(this, new MoveEventArgs {EnteredMove = move});
+
+                    MakeMove();
+                }
+            }
         }
 
         /// <summary>
@@ -282,7 +283,6 @@ namespace TINKIN01.Chess
             if (!moves.Any())
                 State = ChessboardStateEnum.Checkmate;
 
-            //TODO: Pattern recognition to update gamestate
         }
 
         /// <summary>
